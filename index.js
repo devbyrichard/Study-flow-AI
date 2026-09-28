@@ -17,8 +17,7 @@ const GEMINI_API_KEY = "AQ.Ab8RN6JWS3DKdywzhqvuHCHKTuxXDTZ1KqTpyGcoWi7iEynKlw";
 /* =========================================================
    SUPABASE SETUP
 ========================================================= */
-
-const SUPABASE_URL = "YOUR_SUPABASE_URL";
+const SUPABASE_URL = "https://your-project-id.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_evz_iy2P_zJOoOINaHGNXQ_6FxxBcWy";
 
 let supabaseClient = null;

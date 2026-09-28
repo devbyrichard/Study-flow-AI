@@ -558,6 +558,97 @@ function goBack() {
 }
 
 
+/* =========================================
+   MOBILE NAVIGATION
+========================================= */
+
+(function () {
+
+    const mobileMenuBtn =
+        document.getElementById("mobileMenuBtn");
+
+    const mainNav =
+        document.getElementById("mainNav");
+
+    if (!mobileMenuBtn || !mainNav) {
+        return;
+    }
+
+    mobileMenuBtn.addEventListener(
+        "click",
+        function () {
+
+            const isOpen =
+                mainNav.classList.toggle(
+                    "mobile-open"
+                );
+
+            mobileMenuBtn.setAttribute(
+                "aria-expanded",
+                String(isOpen)
+            );
+
+            mobileMenuBtn.textContent =
+                isOpen ? "✕" : "☰";
+
+        }
+    );
+
+
+    mainNav
+        .querySelectorAll(".nav-link")
+        .forEach(function (link) {
+
+            link.addEventListener(
+                "click",
+                function () {
+
+                    mainNav.classList.remove(
+                        "mobile-open"
+                    );
+
+                    mobileMenuBtn.setAttribute(
+                        "aria-expanded",
+                        "false"
+                    );
+
+                    mobileMenuBtn.textContent =
+                        "☰";
+
+                }
+            );
+
+        });
+
+
+    document.addEventListener(
+        "click",
+        function (event) {
+
+            if (
+                !mainNav.contains(event.target) &&
+                !mobileMenuBtn.contains(event.target)
+            ) {
+
+                mainNav.classList.remove(
+                    "mobile-open"
+                );
+
+                mobileMenuBtn.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
+
+                mobileMenuBtn.textContent =
+                    "☰";
+            }
+
+        }
+    );
+
+})();
+
+
 /* =========================================================
    NAVIGATION BUTTONS
 ========================================================= */

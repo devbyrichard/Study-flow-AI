@@ -5789,3 +5789,101 @@ body.dark .social-login-required {
     }
 
 }
+/* =========================================
+   MOBILE NAVIGATION
+========================================= */
+
+.mobile-menu-btn {
+    display: none;
+
+    border: none;
+    background: var(--surface-2);
+    color: var(--text);
+
+    width: 42px;
+    height: 42px;
+
+    border-radius: 10px;
+
+    font-size: 22px;
+    cursor: pointer;
+
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* =========================================
+   MOBILE DROPDOWN
+========================================= */
+
+@media (max-width: 800px) {
+
+    .navbar {
+        height: 68px;
+        padding: 0 18px;
+    }
+
+    .mobile-menu-btn {
+        display: flex;
+        order: 2;
+        margin-left: auto;
+    }
+
+    .logo {
+        font-size: 18px;
+    }
+
+    .main-nav {
+        display: none;
+
+        position: absolute;
+
+        top: 62px;
+        right: 15px;
+
+        width: 220px;
+
+        background: var(--surface);
+
+        border: 1px solid var(--border);
+
+        border-radius: 14px;
+
+        padding: 8px;
+
+        box-shadow: var(--shadow);
+
+        flex-direction: column;
+
+        gap: 4px;
+
+        z-index: 1000;
+    }
+
+    .main-nav.mobile-open {
+        display: flex;
+    }
+
+    .main-nav .nav-link {
+        width: 100%;
+
+        text-align: left;
+
+        padding: 13px 15px;
+
+        border-radius: 10px;
+
+        font-size: 14px;
+    }
+
+    .main-nav .nav-link:hover,
+    .main-nav .nav-link.active {
+        background: var(--surface-2);
+    }
+
+    .nav-actions {
+        margin-left: 8px;
+    }
+
+}

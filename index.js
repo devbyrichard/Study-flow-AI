@@ -3097,6 +3097,34 @@ async function checkAuth() {
 
 }
 
+/* =========================================================
+   SUPABASE AUTHENTICATION
+========================================================= */
+
+const SUPABASE_URL = "YOUR_SUPABASE_URL";
+const SUPABASE_PUBLISHABLE_KEY = "YOUR_SUPABASE_PUBLISHABLE_KEY";
+
+let supabaseClient = null;
+
+if (
+    window.supabase &&
+    SUPABASE_URL &&
+    SUPABASE_PUBLISHABLE_KEY
+) {
+    supabaseClient = window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY,
+        {
+            auth: {
+                persistSession: true,
+                autoRefreshToken: true,
+                detectSessionInUrl: true
+            }
+        }
+    );
+} else {
+    console.warn("Supabase has not been configured.");
+}
 
 /* =========================================================
    SUPABASE AUTH STATE CHANGES

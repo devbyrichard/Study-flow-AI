@@ -43,7 +43,7 @@ if (
     console.warn("Supabase is not configured.");
 }
 
-const GEMINI_API_KEY = "AQ.Ab8RN6JWS3DKdywzhqvuHCHKTuxXDTZ1KqTpyGcoWi7iEynKlw";
+const GEMINI_API_KEY = "AQ.Ab8RN6KzZonjdduSsqXxsJ4AYrF_ur6TkyAwxjo4KynJpErw3g";
 const GEMINI_MODEL = "gemini-3.5-flash-lite";
 
 async function askGemini(prompt) {

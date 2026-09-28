@@ -10,90 +10,24 @@
 
 const GEMINI_API_KEY = "AQ.Ab8RN6JWS3DKdywzhqvuHCHKTuxXDTZ1KqTpyGcoWi7iEynKlw";
 
-const GEMINI_MODEL = "gemini-3.5-flash-lite";
-
-
-/* =========================================================
-   SUPABASE AUTHENTICATION
-========================================================= */
-
-const SUPABASE_URL =
-    "https://vyomsqtwtdvrmextmjtp.supabase.co";
-
-/*
-   IMPORTANT:
-   Put your Supabase PUBLISHABLE key here.
-
-   Get it from:
-
-   Supabase Dashboard
-   → Project Settings
-   → API
-   → Publishable key
-*/
-
-const SUPABASE_PUBLISHABLE_KEY =
-    "sb_publishable_evz_iy2P_zJOoOINaHGNXQ_6FxxBcWy";
-
-
-let supabaseClient = null;
-
-
-/* =========================================================
-   INITIALIZE SUPABASE SAFELY
-========================================================= */
-
-if (
-    window.supabase &&
-    SUPABASE_URL &&
-    SUPABASE_PUBLISHABLE_KEY &&
-    SUPABASE_PUBLISHABLE_KEY !==
-        "YOUR_SUPABASE_PUBLISHABLE_KEY"
-) {
-
-    supabaseClient =
-        window.supabase.createClient(
-            SUPABASE_URL,
-            SUPABASE_PUBLISHABLE_KEY,
-            {
-                auth: {
-                    persistSession: true,
-                    autoRefreshToken: true,
-                    detectSessionInUrl: true
-                }
-            }
-        );
-
-} else {
-
-    console.warn(
-        "Supabase has not been configured yet."
-    );
-
-}
-
-
 /* =========================================================
    GEMINI AI
 ========================================================= */
+
+const GEMINI_MODEL = "gemini-3.5-flash-lite";
 
 async function askGemini(prompt) {
 
     if (
         !GEMINI_API_KEY ||
-        GEMINI_API_KEY ===
-            "YOUR_NEW_GEMINI_API_KEY"
+        GEMINI_API_KEY === "YOUR_NEW_GEMINI_API_KEY"
     ) {
-
         throw new Error(
             "Add your new Gemini API key before using Studyflow AI."
         );
-
     }
 
-
     const educationInstruction = `
-
 You are Studyflow 🎓, an AI educational assistant.
 
 Your purpose is to help students with:
@@ -124,67 +58,49 @@ When helping students:
 If a request is completely unrelated to education, respond:
 
 "I'm Studyflow 🎓. I can only help with education, studying, school subjects, exams, homework, and learning."
-
 `;
-
 
     const fullPrompt =
         educationInstruction +
         "\n\nUSER REQUEST:\n" +
         prompt;
 
-
     const url =
         `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${encodeURIComponent(
             GEMINI_API_KEY
         )}`;
 
+    const response = await fetch(url, {
+        method: "POST",
 
-    const response =
-        await fetch(
-            url,
-            {
-                method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
 
-                headers: {
-                    "Content-Type":
-                        "application/json"
-                },
-
-                body: JSON.stringify({
-                    contents: [
+        body: JSON.stringify({
+            contents: [
+                {
+                    parts: [
                         {
-                            parts: [
-                                {
-                                    text:
-                                        fullPrompt
-                                }
-                            ]
+                            text: fullPrompt
                         }
                     ]
-                })
-            }
-        );
-
+                }
+            ]
+        })
+    });
 
     let data;
 
     try {
-
-        data =
-            await response.json();
-
+        data = await response.json();
     } catch {
-
         throw new Error(
             "Gemini returned an invalid response."
         );
-
     }
 
-
     if (!response.ok) {
-
         console.error(
             "Gemini API error:",
             data
@@ -194,32 +110,24 @@ If a request is completely unrelated to education, respond:
             data?.error?.message ||
             "Gemini API request failed."
         );
-
     }
-
 
     const answer =
         data
             ?.candidates?.[0]
             ?.content?.parts
             ?.map(
-                part =>
-                    part.text || ""
+                part => part.text || ""
             )
             .join("");
 
-
     if (!answer) {
-
         throw new Error(
             "Gemini returned no response."
         );
-
     }
 
-
     return answer.trim();
-
 }
 
 

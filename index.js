@@ -8,7 +8,7 @@
    CONFIGURATION
 ========================================================= */
 
-const GEMINI_API_KEY = "AQ.Ab8RN6JWS3DKdywzhqvuHCHKTuxXDTZ1KqTpyGcoWi7iEynKlw";
+
 
 /* =========================================================
    GEMINI AI
@@ -24,6 +24,7 @@ let supabaseClient = null;
 
 if (
     window.supabase &&
+
     SUPABASE_URL &&
     SUPABASE_PUBLISHABLE_KEY
 ) {
@@ -42,6 +43,7 @@ if (
     console.warn("Supabase is not configured.");
 }
 
+const GEMINI_API_KEY = "AQ.Ab8RN6JWS3DKdywzhqvuHCHKTuxXDTZ1KqTpyGcoWi7iEynKlw";
 const GEMINI_MODEL = "gemini-3.5-flash-lite";
 
 async function askGemini(prompt) {
@@ -97,12 +99,10 @@ const response = await fetch(
     `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`,
     {
         method: "POST",
-
         headers: {
             "Content-Type": "application/json",
             "x-goog-api-key": GEMINI_API_KEY
         },
-
         body: JSON.stringify({
             contents: [
                 {
@@ -492,96 +492,40 @@ function goBack() {
 
 }
 
+const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+const mainNav = document.getElementById("mainNav");
 
-/* =========================================
-   MOBILE NAVIGATION
-========================================= */
+if (mobileMenuBtn && mainNav) {
 
-(function () {
+    mobileMenuBtn.addEventListener("click", function () {
 
-    const mobileMenuBtn =
-        document.getElementById("mobileMenuBtn");
+        const isOpen = mainNav.classList.toggle("mobile-open");
 
-    const mainNav =
-        document.getElementById("mainNav");
+        mobileMenuBtn.setAttribute(
+            "aria-expanded",
+            isOpen ? "true" : "false"
+        );
 
-    if (!mobileMenuBtn || !mainNav) {
-        return;
-    }
+        mobileMenuBtn.textContent = isOpen ? "✕" : "☰";
+    });
 
-    mobileMenuBtn.addEventListener(
-        "click",
-        function () {
 
-            const isOpen =
-                mainNav.classList.toggle(
-                    "mobile-open"
-                );
+    mainNav.querySelectorAll(".nav-link").forEach(function (link) {
+
+        link.addEventListener("click", function () {
+
+            mainNav.classList.remove("mobile-open");
 
             mobileMenuBtn.setAttribute(
                 "aria-expanded",
-                String(isOpen)
+                "false"
             );
 
-            mobileMenuBtn.textContent =
-                isOpen ? "✕" : "☰";
-
-        }
-    );
-
-
-    mainNav
-        .querySelectorAll(".nav-link")
-        .forEach(function (link) {
-
-            link.addEventListener(
-                "click",
-                function () {
-
-                    mainNav.classList.remove(
-                        "mobile-open"
-                    );
-
-                    mobileMenuBtn.setAttribute(
-                        "aria-expanded",
-                        "false"
-                    );
-
-                    mobileMenuBtn.textContent =
-                        "☰";
-
-                }
-            );
-
+            mobileMenuBtn.textContent = "☰";
         });
 
-
-    document.addEventListener(
-        "click",
-        function (event) {
-
-            if (
-                !mainNav.contains(event.target) &&
-                !mobileMenuBtn.contains(event.target)
-            ) {
-
-                mainNav.classList.remove(
-                    "mobile-open"
-                );
-
-                mobileMenuBtn.setAttribute(
-                    "aria-expanded",
-                    "false"
-                );
-
-                mobileMenuBtn.textContent =
-                    "☰";
-            }
-
-        }
-    );
-
-})();
+    });
+}
 
 
 /* =========================================================

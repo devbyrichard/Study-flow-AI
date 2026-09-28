@@ -5812,51 +5812,120 @@ body.dark .social-login-required {
     justify-content: center;
 }
 
+/* =========================================================
+   MAIN NAVIGATION
+========================================================= */
 
-/* =========================================
-   MOBILE DROPDOWN
-========================================= */
+.main-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
 
-@media (max-width: 800px) {
+.nav-link {
+    border: none;
+    background: transparent;
+    color: #172033;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
 
-    .navbar {
-        height: 68px;
-        padding: 0 18px;
-    }
+.nav-link:hover {
+    background: #eef3ff;
+    color: #2457d6;
+    transform: translateY(-1px);
+}
+
+.nav-link.active {
+    background: #2457d6;
+    color: white;
+}
+
+
+/* =========================================================
+   MOBILE MENU BUTTON
+========================================================= */
+
+.mobile-menu-btn {
+    display: none;
+    border: none;
+    background: transparent;
+    color: #172033;
+    font-size: 28px;
+    cursor: pointer;
+    padding: 6px 10px;
+    border-radius: 8px;
+}
+
+.mobile-menu-btn:hover {
+    background: #eef3ff;
+}
+
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+
+body.dark .nav-link {
+    color: #f1f5ff;
+}
+
+body.dark .nav-link:hover {
+    background: #202b42;
+    color: #7da2ff;
+}
+
+body.dark .nav-link.active {
+    background: #4f7cff;
+    color: white;
+}
+
+body.dark .mobile-menu-btn {
+    color: #f1f5ff;
+}
+
+body.dark .mobile-menu-btn:hover {
+    background: #202b42;
+}
+
+
+/* =========================================================
+   MOBILE NAVIGATION
+========================================================= */
+
+@media (max-width: 768px) {
 
     .mobile-menu-btn {
-        display: flex;
-        order: 2;
-        margin-left: auto;
-    }
-
-    .logo {
-        font-size: 18px;
+        display: block;
+        position: relative;
+        z-index: 1001;
     }
 
     .main-nav {
         display: none;
-
         position: absolute;
-
-        top: 62px;
-        right: 15px;
-
-        width: 220px;
-
-        background: var(--surface);
-
-        border: 1px solid var(--border);
-
-        border-radius: 14px;
-
-        padding: 8px;
-
-        box-shadow: var(--shadow);
+        top: 75px;
+        left: 0;
+        right: 0;
 
         flex-direction: column;
+        align-items: stretch;
+        gap: 5px;
 
-        gap: 4px;
+        padding: 12px 16px;
+
+        background: white;
+        border-bottom: 1px solid #e9edf3;
+
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 
         z-index: 1000;
     }
@@ -5865,25 +5934,38 @@ body.dark .social-login-required {
         display: flex;
     }
 
-    .main-nav .nav-link {
+    .nav-link {
         width: 100%;
-
         text-align: left;
-
         padding: 13px 15px;
-
-        border-radius: 10px;
-
-        font-size: 14px;
+        font-size: 16px;
     }
 
-    .main-nav .nav-link:hover,
-    .main-nav .nav-link.active {
-        background: var(--surface-2);
+    body.dark .main-nav {
+        background: #111827;
+        border-bottom-color: #273247;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+}
+
+
+/* =========================================================
+   SMALL PHONES
+========================================================= */
+
+@media (max-width: 480px) {
+
+    .main-nav {
+        top: 70px;
+        padding: 10px 12px;
     }
 
-    .nav-actions {
-        margin-left: 8px;
+    .nav-link {
+        padding: 12px;
+        font-size: 15px;
     }
 
+    .mobile-menu-btn {
+        font-size: 25px;
+    }
 }

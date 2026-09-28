@@ -1,0 +1,2356 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" type="image/png" href="SFLOGO.png">
+
+    <title>Studyflow AI</title>
+
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<header class="navbar">
+
+    <a class="logo" href="index.html">
+        <span class="logo-icon">✦</span>
+        <span>Studyflow</span>
+    </a>
+
+    <nav>
+
+        <button
+            class="nav-link active"
+            data-page="home"
+            type="button">
+            Home
+        </button>
+
+        <button
+            class="nav-link"
+            data-page="study"
+            type="button">
+            📚 Study
+        </button>
+
+        <button
+            class="nav-link"
+            data-page="exams"
+            type="button">
+            📝 Exams
+        </button>
+
+        <button
+            class="nav-link"
+            data-page="social"
+            type="button">
+            🌍 Community
+        </button>
+
+        <button
+            class="nav-link"
+            data-page="dashboard"
+            type="button">
+            📊 Dashboard
+        </button>
+
+    </nav>
+
+    <div class="nav-actions">
+
+        <button
+            class="icon-btn"
+            id="themeBtn"
+            title="Toggle theme"
+            type="button">
+            🌙
+        </button>
+
+        <div class="profile-menu">
+
+            <button
+                class="profile"
+                id="profileBtn"
+                type="button">
+                <span>SF</span>
+            </button>
+
+            <div
+                class="profile-dropdown"
+                id="profileDropdown">
+
+                <button
+                    id="loginBtn"
+                    type="button">
+                    👤 Log In
+                </button>
+
+                <button
+                    id="signupBtn"
+                    type="button">
+                    ✨ Sign Up
+                </button>
+
+                <div
+                    id="authUserInfo"
+                    style="display:none; padding:8px 12px;">
+
+                    <strong id="profileName">
+                        Student
+                    </strong>
+
+                    <small
+                        id="profileEmail"
+                        style="display:block;">
+                    </small>
+
+                </div>
+
+                <button
+                    id="logoutBtn"
+                    type="button"
+                    style="display:none;">
+                    🚪 Log Out
+                </button>
+
+                <button
+                    id="contactBtn"
+                    type="button">
+                    📩 Contact Us
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<main>
+
+
+<!-- =====================================================
+     HOME PAGE
+===================================================== -->
+
+<section
+    class="page active-page"
+    id="homePage">
+
+    <div class="hero">
+
+        <div class="hero-text">
+
+            <span class="small-label">
+                ✦ YOUR AI STUDY ASSISTANT
+            </span>
+
+            <h1 id="typingHeading">
+                Learn smarter.
+                <br>
+                <span>Not harder.</span>
+            </h1>
+
+            <p>
+                Stuck on a topic? Preparing for an exam?
+                Studyflow uses AI to help you understand,
+                practise and focus on what matters.
+            </p>
+
+        </div>
+
+
+        <!-- AI SEARCH BOX -->
+
+        <div class="ai-box">
+
+            <div class="ai-box-top">
+
+                <div class="ai-status">
+                    <span class="status-dot"></span>
+                    Studyflow AI
+                </div>
+
+                <span class="ai-powered">
+                    POWERED BY AI
+                </span>
+
+            </div>
+
+            <textarea
+                id="homeQuestion"
+                placeholder="What are you stuck on today? Try: Explain calculus like I'm in SS2...">
+            </textarea>
+
+            <div class="ai-box-bottom">
+
+                <div class="quick-suggestions">
+
+                    <button
+                        class="suggestion"
+                        data-question="Explain photosynthesis in simple terms"
+                        type="button">
+                        🌱 Photosynthesis
+                    </button>
+
+                    <button
+                        class="suggestion"
+                        data-question="Explain Newton's laws"
+                        type="button">
+                        ⚡ Newton's Laws
+                    </button>
+
+                    <button
+                        class="suggestion"
+                        data-question="Explain quadratic equations"
+                        type="button">
+                        📐 Quadratics
+                    </button>
+
+                </div>
+
+                <button
+                    class="primary-btn"
+                    id="homeAskBtn"
+                    type="button">
+                    ✦ Ask Studyflow
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- QUICK ACTIONS -->
+
+    <section class="section">
+
+        <div class="section-heading">
+
+            <div>
+
+                <span class="small-label">
+                    GET STARTED
+                </span>
+
+                <h2>
+                    What do you need help with?
+                </h2>
+
+            </div>
+
+        </div>
+
+        <div class="action-grid">
+
+            <div
+                class="action-card explain-card"
+                data-page="study">
+
+                <div class="action-icon">
+                    💡
+                </div>
+
+                <h3>
+                    Study &amp; Learn
+                </h3>
+
+                <p>
+                    Understand difficult topics and find out
+                    what you should study next with AI.
+                </p>
+
+                <span class="card-link">
+                    Start studying →
+                </span>
+
+            </div>
+
+
+            <div
+                class="action-card quiz-card"
+                data-page="exams">
+
+                <div class="action-icon">
+                    📝
+                </div>
+
+                <h3>
+                    Take an Exam
+                </h3>
+
+                <p>
+                    Generate AI questions and test
+                    how much you really know.
+                </p>
+
+                <span class="card-link">
+                    Start exam →
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- PROGRESS -->
+
+    <section class="section">
+
+        <div class="section-heading">
+
+            <div>
+
+                <span class="small-label">
+                    YOUR PROGRESS
+                </span>
+
+                <h2>
+                    Keep improving
+                </h2>
+
+            </div>
+
+        </div>
+
+        <div class="stats-grid">
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    📚
+                </div>
+
+                <div>
+
+                    <span>
+                        Topics studied
+                    </span>
+
+                    <strong id="topicsStat">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    🎯
+                </div>
+
+                <div>
+
+                    <span>
+                        Quiz accuracy
+                    </span>
+
+                    <strong id="accuracyStat">
+                        0%
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    🔥
+                </div>
+
+                <div>
+
+                    <span>
+                        Study streak
+                    </span>
+
+                    <strong id="streakStat">
+                        0 days
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- RECENT -->
+
+    <section class="section">
+
+        <div class="section-heading">
+
+            <div>
+
+                <span class="small-label">
+                    RECENTLY STUDIED
+                </span>
+
+                <h2>
+                    Your learning activity
+                </h2>
+
+            </div>
+
+        </div>
+
+        <div
+            class="recent-list"
+            id="recentList">
+
+            <div class="empty-state">
+
+                <div>📖</div>
+
+                <p>
+                    No topics studied yet.
+                </p>
+
+                <small>
+                    Start by asking Studyflow a question.
+                </small>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</section>
+
+
+<!-- =====================================================
+     STUDY PAGE
+===================================================== -->
+
+<section
+    class="page"
+    id="studyPage">
+
+    <button
+        class="back-btn"
+        onclick="goBack()"
+        type="button">
+        ← Back
+    </button>
+
+
+    <!-- AI EXPLAIN -->
+
+    <div class="tool-header">
+
+        <span class="small-label">
+            ✦ AI STUDY
+        </span>
+
+        <h1>
+            Learn and focus.
+        </h1>
+
+        <p>
+            Understand difficult topics and let Studyflow
+            help you decide what to study next.
+        </p>
+
+    </div>
+
+
+    <button
+        class="save-btn"
+        id="saveExplainBtn"
+        type="button">
+        💾 Save Explanation
+    </button>
+
+
+    <div class="tool-layout">
+
+        <div class="tool-panel">
+
+            <label for="topicInput">
+                What topic are you struggling with?
+            </label>
+
+            <textarea
+                class="large-input"
+                id="topicInput"
+                placeholder="Example: Explain mitosis and meiosis...">
+            </textarea>
+
+
+            <div class="input-row">
+
+                <div class="input-group">
+
+                    <label for="levelInput">
+                        Level
+                    </label>
+
+                    <select id="levelInput">
+
+                        <option>
+                            Beginner
+                        </option>
+
+                        <option>
+                            Junior Secondary
+                        </option>
+
+                        <option selected>
+                            Senior Secondary
+                        </option>
+
+                        <option>
+                            University
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label for="styleInput">
+                        Explanation style
+                    </label>
+
+                    <select id="styleInput">
+
+                        <option>
+                            Simple
+                        </option>
+
+                        <option>
+                            Detailed
+                        </option>
+
+                        <option>
+                            Step-by-step
+                        </option>
+
+                        <option>
+                            Exam focused
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <button
+                class="primary-btn full-btn"
+                id="explainBtn"
+                type="button">
+                ✦ Explain This Topic
+            </button>
+
+
+            <div class="voice-controls">
+
+                <select id="voiceSelect">
+
+                    <option value="">
+                        Default Voice
+                    </option>
+
+                </select>
+
+                <button
+                    class="read-aloud-btn"
+                    id="readExplainBtn"
+                    type="button">
+                    🔊 Read Aloud
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="result-panel"
+            id="explainResult">
+
+            <div class="result-empty">
+
+                <div class="big-ai-icon">
+                    ✦
+                </div>
+
+                <h3>
+                    Your explanation will appear here
+                </h3>
+
+                <p>
+                    Ask Studyflow about a topic
+                    and we'll make it easier to understand.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- STUDY FOCUS -->
+
+    <div class="study-focus-heading">
+
+        <span class="small-label">
+            ✦ STUDY FOCUS
+        </span>
+
+        <h2>
+            Find out what to study next.
+        </h2>
+
+    </div>
+
+
+    <div class="tool-header">
+
+        <span class="small-label">
+            ✦ AI STUDY FOCUS
+        </span>
+
+        <h1>
+            Know what to study next.
+        </h1>
+
+        <p>
+            Tell Studyflow what you're struggling with
+            and AI will create a focused study plan for you.
+        </p>
+
+    </div>
+
+
+    <div class="tool-layout">
+
+        <div class="tool-panel">
+
+            <label for="weakTopics">
+                What topics are you struggling with?
+            </label>
+
+            <textarea
+                id="weakTopics"
+                class="large-input"
+                placeholder="Example: I struggle with quadratic equations, simultaneous equations and graphs...">
+            </textarea>
+
+
+            <div class="weak-topics-box">
+
+                <div class="weak-topics-header">
+
+                    <strong>
+                        🎯 Your Weak Quiz Topics
+                    </strong>
+
+                    <small>
+                        Based on questions you got wrong
+                    </small>
+
+                </div>
+
+                <div id="weakTopicsList">
+
+                    <div class="empty-state">
+
+                        <p>
+                            No weak topics detected yet.
+                        </p>
+
+                        <small>
+                            Complete an exam to automatically
+                            track the topics you need to practise.
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="input-row">
+
+                <div class="input-group">
+
+                    <label for="studyTime">
+                        Available study time
+                    </label>
+
+                    <select id="studyTime">
+
+                        <option value="30 minutes">
+                            30 Minutes
+                        </option>
+
+                        <option
+                            value="1 hour"
+                            selected>
+                            1 Hour
+                        </option>
+
+                        <option value="2 hours">
+                            2 Hours
+                        </option>
+
+                        <option value="3 hours">
+                            3 Hours
+                        </option>
+
+                        <option value="4 hours">
+                            4 Hours
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label for="examType">
+                        Preparing for
+                    </label>
+
+                    <select id="examType">
+
+                        <option value="School test">
+                            School Test
+                        </option>
+
+                        <option value="WAEC">
+                            WAEC
+                        </option>
+
+                        <option value="NECO">
+                            NECO
+                        </option>
+
+                        <option value="JAMB">
+                            JAMB
+                        </option>
+
+                        <option value="GCE">
+                            GCE
+                        </option>
+
+                        <option value="University exam">
+                            University Exam
+                        </option>
+
+                        <option value="General revision">
+                            General Revision
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <button
+                class="primary-btn full-btn"
+                id="focusBtn"
+                type="button">
+                ✦ Find My Study Focus
+            </button>
+
+        </div>
+
+
+        <div
+            class="result-panel"
+            id="focusResult">
+
+            <div class="result-empty">
+
+                <div class="big-ai-icon">
+                    🎯
+                </div>
+
+                <h3>
+                    Your study plan will appear here
+                </h3>
+
+                <p>
+                    Tell Studyflow what you're struggling
+                    with and we'll help you decide what
+                    to study first.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     EXAMS PAGE
+===================================================== -->
+
+<section
+    class="page"
+    id="examsPage">
+
+
+    <!-- EXAM SETUP -->
+
+    <div
+        id="examSetup"
+        class="exam-screen">
+
+        <div class="exam-header">
+
+            <span class="small-label">
+                ✦ STUDYFLOW EXAMS
+            </span>
+
+            <h1>
+                Test your knowledge.
+            </h1>
+
+            <p>
+                Create a practice session or exam based
+                on your subject, topic and examination type.
+            </p>
+
+        </div>
+
+
+        <div class="exam-setup-card">
+
+            <div class="exam-field">
+
+                <label for="examTypeSelect">
+                    Examination Type
+                </label>
+
+                <select id="examTypeSelect">
+
+                    <option value="General">
+                        General Practice
+                    </option>
+
+                    <option value="WAEC">
+                        WAEC
+                    </option>
+
+                    <option value="NECO">
+                        NECO
+                    </option>
+
+                    <option value="JAMB">
+                        JAMB
+                    </option>
+
+                    <option value="GCE">
+                        GCE
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="exam-field">
+
+                <label for="examSubject">
+                    Subject
+                </label>
+
+                <select id="examSubject">
+
+                    <option value="">
+                        Select a subject
+                    </option>
+
+                    <option>
+                        Mathematics
+                    </option>
+
+                    <option>
+                        English Language
+                    </option>
+
+                    <option>
+                        Biology
+                    </option>
+
+                    <option>
+                        Chemistry
+                    </option>
+
+                    <option>
+                        Physics
+                    </option>
+
+                    <option>
+                        Government
+                    </option>
+
+                    <option>
+                        Economics
+                    </option>
+
+                    <option>
+                        Literature
+                    </option>
+
+                    <option>
+                        Geography
+                    </option>
+
+                    <option>
+                        Computer Science
+                    </option>
+
+                    <option>
+                        Agricultural Science
+                    </option>
+
+                    <option>
+                        Civic Education
+                    </option>
+
+                    <option>
+                        Commerce
+                    </option>
+
+                    <option>
+                        Accounting
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="exam-field">
+
+                <label for="examTopic">
+
+                    Topic
+
+                    <span class="optional">
+                        Optional
+                    </span>
+
+                </label>
+
+                <input
+                    type="text"
+                    id="examTopic"
+                    placeholder="Example: Quadratic Equations">
+
+                <small>
+                    Leave blank to generate questions
+                    from the whole subject.
+                </small>
+
+            </div>
+
+
+            <div class="exam-field">
+
+                <label>
+                    Question Type
+                </label>
+
+                <div class="choice-grid">
+
+                    <button
+                        type="button"
+                        class="choice-btn active"
+                        data-question-type="obj">
+
+                        <strong>
+                            OBJ
+                        </strong>
+
+                        <span>
+                            Multiple choice
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="choice-btn"
+                        data-question-type="theory">
+
+                        <strong>
+                            Theory
+                        </strong>
+
+                        <span>
+                            Written answers
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="choice-btn"
+                        data-question-type="both">
+
+                        <strong>
+                            Both
+                        </strong>
+
+                        <span>
+                            OBJ + Theory
+                        </span>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="exam-field">
+
+                <label>
+                    Exam Mode
+                </label>
+
+                <div class="mode-grid">
+
+                    <button
+                        type="button"
+                        class="mode-btn active"
+                        data-mode="practice">
+
+                        <span class="mode-icon">
+                            📚
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                Practice Mode
+                            </strong>
+
+                            <small>
+                                Get feedback while practicing.
+                            </small>
+
+                        </div>
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="mode-btn"
+                        data-mode="exam">
+
+                        <span class="mode-icon">
+                            📝
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                Exam Mode
+                            </strong>
+
+                            <small>
+                                Complete the exam before
+                                seeing your results.
+                            </small>
+
+                        </div>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="exam-two-columns">
+
+                <div class="exam-field">
+
+                    <label for="questionCount">
+                        Number of Questions
+                    </label>
+
+                    <select id="questionCount">
+
+                        <option value="5">
+                            5 Questions
+                        </option>
+
+                        <option
+                            value="10"
+                            selected>
+                            10 Questions
+                        </option>
+
+                        <option value="20">
+                            20 Questions
+                        </option>
+
+                        <option value="30">
+                            30 Questions
+                        </option>
+
+                        <option value="40">
+                            40 Questions
+                        </option>
+
+                        <option value="50">
+                            50 Questions
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="exam-field">
+
+                    <label for="examTime">
+                        Time Limit
+                    </label>
+
+                    <select id="examTime">
+
+                        <option value="10">
+                            10 Minutes
+                        </option>
+
+                        <option
+                            value="20"
+                            selected>
+                            20 Minutes
+                        </option>
+
+                        <option value="30">
+                            30 Minutes
+                        </option>
+
+                        <option value="45">
+                            45 Minutes
+                        </option>
+
+                        <option value="60">
+                            1 Hour
+                        </option>
+
+                        <option value="90">
+                            1 Hour 30 Minutes
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <div class="exam-ai-info">
+
+                <div class="exam-ai-icon">
+                    ✦
+                </div>
+
+                <div>
+
+                    <strong>
+                        AI-Powered Questions
+                    </strong>
+
+                    <p>
+                        Studyflow will generate questions
+                        based on your exam type, subject,
+                        topic and question style.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <button
+                id="startExamBtn"
+                class="primary-btn exam-start-btn"
+                type="button">
+
+                ✦ Generate Exam
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- EXAM INTERFACE -->
+
+    <div
+        id="examContainer"
+        class="exam-screen hidden">
+
+        <div class="exam-topbar">
+
+            <div>
+
+                <span id="runningExamType">
+                    WAEC
+                </span>
+
+                <h2 id="runningExamTitle">
+                    Mathematics
+                </h2>
+
+            </div>
+
+            <div class="exam-timer">
+
+                <span>
+                    ⏱
+                </span>
+
+                <strong id="examTimer">
+                    20:00
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="exam-progress-area">
+
+            <div class="exam-progress-text">
+
+                <span id="examProgressText">
+                    Question 1 of 10
+                </span>
+
+                <span id="examModeText">
+                    Practice Mode
+                </span>
+
+            </div>
+
+            <div class="exam-progress">
+
+                <div
+                    id="examProgressBar"
+                    class="exam-progress-fill">
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="question-card">
+
+            <div class="question-meta">
+
+                <span id="questionTypeBadge">
+                    OBJ
+                </span>
+
+                <span id="questionMarks">
+                    1 mark
+                </span>
+
+            </div>
+
+            <h2 id="examQuestion">
+                Loading question...
+            </h2>
+
+
+            <div
+                id="objAnswers"
+                class="obj-answers">
+            </div>
+
+
+            <div
+                id="theoryAnswerArea"
+                class="theory-answer-area hidden">
+
+                <label for="theoryAnswer">
+                    Your Answer
+                </label>
+
+                <textarea
+                    id="theoryAnswer"
+                    placeholder="Write your answer here...">
+                </textarea>
+
+                <div class="answer-help">
+                    Write your answer clearly.
+                    Your response will be marked
+                    after submission.
+                </div>
+
+            </div>
+
+
+            <div
+                id="practiceFeedback"
+                class="practice-feedback hidden">
+            </div>
+
+
+            <div class="question-navigation">
+
+                <button
+                    id="previousQuestionBtn"
+                    class="secondary-btn"
+                    type="button">
+                    ← Previous
+                </button>
+
+                <button
+                    id="nextQuestionBtn"
+                    class="primary-btn"
+                    type="button">
+                    Next →
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="question-numbers-card">
+
+            <h3>
+                Questions
+            </h3>
+
+            <div
+                id="questionNumbers"
+                class="question-numbers">
+            </div>
+
+        </div>
+
+
+        <button
+            id="submitExamBtn"
+            class="submit-exam-btn"
+            type="button">
+            Submit Exam
+        </button>
+
+    </div>
+
+
+    <!-- RESULTS -->
+
+    <div
+        id="examResults"
+        class="exam-screen hidden">
+
+        <div class="results-card">
+
+            <span class="small-label">
+                ✦ EXAM COMPLETED
+            </span>
+
+            <h1>
+                Your Results
+            </h1>
+
+            <p id="resultsDescription">
+                Here is how you performed.
+            </p>
+
+
+            <div class="score-circle">
+
+                <strong id="resultPercentage">
+                    0%
+                </strong>
+
+                <span>
+                    Score
+                </span>
+
+            </div>
+
+
+            <div class="result-stats">
+
+                <div class="result-stat">
+
+                    <strong id="resultCorrect">
+                        0
+                    </strong>
+
+                    <span>
+                        Correct
+                    </span>
+
+                </div>
+
+
+                <div class="result-stat">
+
+                    <strong id="resultWrong">
+                        0
+                    </strong>
+
+                    <span>
+                        Wrong
+                    </span>
+
+                </div>
+
+
+                <div class="result-stat">
+
+                    <strong id="resultUnanswered">
+                        0
+                    </strong>
+
+                    <span>
+                        Unanswered
+                    </span>
+
+                </div>
+
+
+                <div class="result-stat">
+
+                    <strong id="resultTotal">
+                        0
+                    </strong>
+
+                    <span>
+                        Total
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="theoryResults"
+                class="theory-results hidden">
+
+                <h3>
+                    Theory Results
+                </h3>
+
+                <div id="theoryResultsList"></div>
+
+            </div>
+
+
+            <div class="review-section">
+
+                <h3>
+                    Review Answers
+                </h3>
+
+                <div
+                    id="reviewAnswers"
+                    class="review-answers">
+                </div>
+
+            </div>
+
+
+            <div class="result-actions">
+
+                <button
+                    id="retryExamBtn"
+                    class="primary-btn"
+                    type="button">
+                    🔄 Try Again
+                </button>
+
+                <button
+                    id="newExamBtn"
+                    class="secondary-btn"
+                    type="button">
+                    📝 New Exam
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     COMMUNITY PAGE
+===================================================== -->
+
+<section
+    id="socialPage"
+    class="page">
+
+    <div class="social-page">
+
+        <div class="social-header">
+
+            <span class="small-label">
+                COMMUNITY
+            </span>
+
+            <h1>
+                Global Chat &amp; Friends
+            </h1>
+
+            <p>
+                Connect with other Studyflow students
+                and study together.
+            </p>
+
+        </div>
+
+
+        <!-- LOGIN REQUIRED -->
+
+   <div
+    id="socialLoginRequired"
+    class="social-login-required">
+
+            <div>
+                🔐
+            </div>
+
+            <h2>
+                Login Required
+            </h2>
+
+            <p>
+                Log in to use Global Chat and
+                Friend Requests.
+            </p>
+
+            <button
+                class="primary-btn"
+                id="socialLoginBtn"
+                type="button">
+                Log In
+            </button>
+
+        </div>
+
+
+        <!-- SOCIAL APP -->
+
+        <div
+            id="socialApp"
+            class="social-layout hidden">
+
+
+            <!-- GLOBAL CHAT -->
+
+            <div class="global-chat">
+
+                <div class="chat-header">
+
+                    <div class="chat-icon">
+                        🌍
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Global Chat
+                        </h2>
+
+                        <p>
+                            Chat with Studyflow students
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="chatMessages"
+                    class="chat-messages">
+                </div>
+
+
+                <form
+                    id="chatForm"
+                    class="chat-input-area">
+
+                    <input
+                        id="chatInput"
+                        class="chat-input"
+                        type="text"
+                        maxlength="1000"
+                        placeholder="Type a message..."
+                        autocomplete="off">
+
+                    <button
+                        id="chatSendBtn"
+                        class="chat-send-btn"
+                        type="submit">
+                        ➤
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <!-- FRIENDS -->
+
+            <aside class="friends-panel">
+
+                <div class="friends-panel-header">
+
+                    <h2>
+                        Friends
+                    </h2>
+
+                    <span
+                        id="friendsCount"
+                        class="friends-count">
+                        0
+                    </span>
+
+                </div>
+
+
+                <!-- SEARCH -->
+
+                <div class="friend-search">
+
+                    <input
+                        id="friendSearchInput"
+                        type="text"
+                        placeholder="Search students..."
+                        autocomplete="off">
+
+                    <button
+                        id="friendSearchBtn"
+                        type="button">
+                        🔎
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="friendSearchResults">
+                </div>
+
+
+                <!-- REQUESTS -->
+
+                <div class="friend-section">
+
+                    <div class="friend-section-title">
+
+                        <h3>
+                            Friend Requests
+                        </h3>
+
+                        <span
+                            id="requestCount"
+                            class="request-badge">
+                            0
+                        </span>
+
+                    </div>
+
+                    <div
+                        id="friendRequestsList"
+                        class="friend-list">
+                    </div>
+
+                </div>
+
+
+                <!-- FRIEND LIST -->
+
+                <div class="friend-section">
+
+                    <div class="friend-section-title">
+
+                        <h3>
+                            My Friends
+                        </h3>
+
+                    </div>
+
+                    <div
+                        id="friendsList"
+                        class="friend-list">
+                    </div>
+
+                </div>
+
+            </aside>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     DASHBOARD
+===================================================== -->
+
+<section
+    class="page"
+    id="dashboardPage">
+
+    <div class="tool-header">
+
+        <span class="small-label">
+            ✦ YOUR PROGRESS
+        </span>
+
+        <h1>
+            Study Dashboard
+        </h1>
+
+        <p>
+            Track your learning progress and see what
+            you should focus on next.
+        </p>
+
+    </div>
+
+
+    <div class="dashboard-stats">
+
+        <div class="dashboard-card">
+
+            <div class="dashboard-icon">
+                📚
+            </div>
+
+            <div>
+
+                <span>
+                    Topics Studied
+                </span>
+
+                <strong id="dashboardTopics">
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="dashboard-card">
+
+            <div class="dashboard-icon">
+                🎯
+            </div>
+
+            <div>
+
+                <span>
+                    Quiz Accuracy
+                </span>
+
+                <strong id="dashboardAccuracy">
+                    0%
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="dashboard-card">
+
+            <div class="dashboard-icon">
+                🔥
+            </div>
+
+            <div>
+
+                <span>
+                    Study Streak
+                </span>
+
+                <strong id="dashboardStreak">
+                    0 days
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="dashboard-card">
+
+            <div class="dashboard-icon">
+                ❌
+            </div>
+
+            <div>
+
+                <span>
+                    Weak Topics
+                </span>
+
+                <strong id="dashboardWeakTopics">
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="dashboard-grid">
+
+
+        <!-- SAVED NOTES -->
+
+        <div class="dashboard-panel saved-notes-panel">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <span class="small-label">
+                        YOUR NOTES
+                    </span>
+
+                    <h2>
+                        Saved Notes
+                    </h2>
+
+                </div>
+
+                <span>
+                    💾
+                </span>
+
+            </div>
+
+
+            <div id="savedNotesList">
+
+                <div class="empty-state">
+
+                    <div>
+                        📝
+                    </div>
+
+                    <p>
+                        No saved notes yet.
+                    </p>
+
+                    <small>
+                        Save an explanation to see it here.
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- RECENT TOPICS -->
+
+        <div class="dashboard-panel">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <span class="small-label">
+                        RECENT
+                    </span>
+
+                    <h2>
+                        Recently Studied
+                    </h2>
+
+                </div>
+
+                <span>
+                    📖
+                </span>
+
+            </div>
+
+
+            <div id="dashboardRecent">
+
+                <div class="empty-state">
+
+                    <div>
+                        📚
+                    </div>
+
+                    <p>
+                        No topics studied yet.
+                    </p>
+
+                    <small>
+                        Start learning to see your
+                        recent topics here.
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- WEAK TOPICS -->
+
+        <div class="dashboard-panel">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <span class="small-label">
+                        PRACTICE
+                    </span>
+
+                    <h2>
+                        Weak Topics
+                    </h2>
+
+                </div>
+
+                <span>
+                    🧠
+                </span>
+
+            </div>
+
+
+            <div id="dashboardWeakList">
+
+                <div class="empty-state">
+
+                    <div>
+                        🎯
+                    </div>
+
+                    <p>
+                        No weak topics yet.
+                    </p>
+
+                    <small>
+                        Complete exams to automatically
+                        detect areas you need to practise.
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- QUICK ACTIONS -->
+
+    <div class="dashboard-panel quick-actions">
+
+        <div class="panel-header">
+
+            <div>
+
+                <span class="small-label">
+                    KEEP LEARNING
+                </span>
+
+                <h2>
+                    Quick Actions
+                </h2>
+
+            </div>
+
+            <span>
+                ⚡
+            </span>
+
+        </div>
+
+
+        <div class="action-buttons">
+
+            <button
+                class="dashboard-action"
+                data-page="study"
+                type="button">
+                📚 Study &amp; Learn
+            </button>
+
+            <button
+                class="dashboard-action"
+                data-page="exams"
+                type="button">
+                📝 Take an Exam
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     SAVED NOTE PAGE
+===================================================== -->
+
+<section
+    class="page"
+    id="savedNotePage">
+
+    <div class="tool-header">
+
+        <span class="small-label">
+            ✦ SAVED NOTE
+        </span>
+
+        <h1 id="savedNoteTitle">
+            Saved Explanation
+        </h1>
+
+        <p id="savedNoteDate">
+            Saved note
+        </p>
+
+    </div>
+
+
+    <div class="saved-note-view">
+
+        <div class="saved-note-view-header">
+            <span>
+                📚 Studyflow Notes
+            </span>
+        </div>
+
+        <div
+            class="saved-note-content"
+            id="savedNoteContent">
+            Your saved explanation will appear here.
+        </div>
+
+    </div>
+
+
+    <button
+        class="secondary-btn"
+        id="backToDashboardBtn"
+        type="button">
+        ← Back to Dashboard
+    </button>
+
+</section>
+
+
+</main>
+
+
+<!-- =====================================================
+     MISTAKE POPUP
+===================================================== -->
+
+<div
+    id="mistakePopup"
+    class="mistake-popup hidden">
+
+    <div class="mistake-popup-content">
+
+        <button
+            id="closeMistakePopup"
+            class="close-popup"
+            type="button">
+            ×
+        </button>
+
+        <div class="mistake-icon">
+            💡
+        </div>
+
+        <h2>
+            You missed this one!
+        </h2>
+
+        <p>
+            Don't worry. Studyflow can explain the
+            mistake and help you understand the concept.
+        </p>
+
+        <button
+            id="explainMistakeBtn"
+            class="primary-btn full-btn"
+            type="button">
+            ✦ Explain My Mistake
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     TOAST
+===================================================== -->
+
+<div
+    class="toast"
+    id="toast">
+
+    <span>
+        ✓
+    </span>
+
+    <p>
+        Done!
+    </p>
+
+</div>
+
+
+<!-- =====================================================
+     MATHJAX
+===================================================== -->
+
+<script>
+
+window.MathJax = {
+
+    tex: {
+
+        inlineMath: [
+            ['$', '$'],
+            ['\\(', '\\)']
+        ],
+
+        displayMath: [
+            ['$$', '$$'],
+            ['\\[', '\\]']
+        ]
+
+    }
+
+};
+
+</script>
+
+<script
+    async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+
+
+<!-- =====================================================
+     LOGIN MODAL
+===================================================== -->
+
+<div
+    class="modal hidden"
+    id="loginModal">
+
+    <div class="modal-content">
+
+        <button
+            class="modal-close"
+            data-close="loginModal"
+            type="button">
+            ×
+        </button>
+
+        <div class="modal-icon">
+            👤
+        </div>
+
+        <h2>
+            Welcome back
+        </h2>
+
+        <p>
+            Log in to continue using Studyflow.
+        </p>
+
+        <input
+            id="loginEmail"
+            placeholder="Email address"
+            type="email">
+
+        <input
+            id="loginPassword"
+            placeholder="Password"
+            type="password">
+
+        <button
+            class="primary-btn full-btn"
+            id="loginSubmit"
+            type="button">
+            Log In
+        </button>
+
+        <p class="modal-switch">
+
+            Don't have an account?
+
+            <button
+                id="switchToSignup"
+                type="button">
+                Sign Up
+            </button>
+
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     SIGN UP MODAL
+===================================================== -->
+
+<div
+    class="modal hidden"
+    id="signupModal">
+
+    <div class="modal-content">
+
+        <button
+            class="modal-close"
+            data-close="signupModal"
+            type="button">
+            ×
+        </button>
+
+        <div class="modal-icon">
+            ✨
+        </div>
+
+        <h2>
+            Create your account
+        </h2>
+
+        <p>
+            Join Studyflow and start learning smarter.
+        </p>
+
+        <input
+            id="signupName"
+            placeholder="Your name"
+            type="text">
+
+        <input
+            id="signupEmail"
+            placeholder="Email address"
+            type="email">
+
+        <input
+            id="signupPassword"
+            placeholder="Create a password"
+            type="password">
+
+        <button
+            class="primary-btn full-btn"
+            id="signupSubmit"
+            type="button">
+            Sign Up
+        </button>
+
+        <p class="modal-switch">
+
+            Already have an account?
+
+            <button
+                id="switchToLogin"
+                type="button">
+                Log In
+            </button>
+
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     SUPABASE
+===================================================== -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+<!-- =====================================================
+     STUDYFLOW JAVASCRIPT
+===================================================== -->
+
+<script src="index.js"></script>
+
+</body>
+
+</html>

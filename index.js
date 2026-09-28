@@ -8,7 +8,7 @@
    CONFIGURATION
 ========================================================= */
 
-const GEMINI_API_KEY = "AQ.Ab8RN6LVCLeKFhpHSXnKISCjG-gUoNsEcm49xAWlM_HFeiKaEA";
+const GEMINI_API_KEY = "AQ.Ab8RN6JWS3DKdywzhqvuHCHKTuxXDTZ1KqTpyGcoWi7iEynKlw";
 
 const GEMINI_MODEL = "gemini-3.5-flash-lite";
 

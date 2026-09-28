@@ -65,16 +65,14 @@ If a request is completely unrelated to education, respond:
         "\n\nUSER REQUEST:\n" +
         prompt;
 
-    const url =
-        `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${encodeURIComponent(
-            GEMINI_API_KEY
-        )}`;
-
-    const response = await fetch(url, {
+const response = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`,
+    {
         method: "POST",
 
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "x-goog-api-key": GEMINI_API_KEY
         },
 
         body: JSON.stringify({
@@ -88,7 +86,8 @@ If a request is completely unrelated to education, respond:
                 }
             ]
         })
-    });
+    }
+);
 
     let data;
 

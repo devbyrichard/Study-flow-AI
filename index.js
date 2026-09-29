@@ -3331,7 +3331,7 @@ if (contactBtn) {
 
 
             window.location.href =
-                "mailto:studyflow@example.com";
+                "mailto:rkannison@gmail.com";
 
         }
     );

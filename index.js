@@ -43,17 +43,19 @@ if (
     console.warn("Supabase is not configured.");
 }
 
-const GEMINI_API_KEY = "AQ.Ab8RN6KzZonjdduSsqXxsJ4AYrF_ur6TkyAwxjo4KynJpErw3g";
-const GEMINI_MODEL = "gemini-3.5-flash-lite";
+const GEMINI_FUNCTION_NAME = "gemini-ai";
 
 async function askGemini(prompt) {
 
-    if (
-        !GEMINI_API_KEY ||
-        GEMINI_API_KEY === "YOUR_NEW_GEMINI_API_KEY"
-    ) {
+    if (!supabaseClient) {
         throw new Error(
-            "Add your new Gemini API key before using Studyflow AI."
+            "Supabase is not configured."
+        );
+    }
+
+    if (!prompt || !String(prompt).trim()) {
+        throw new Error(
+            "Please enter a question first."
         );
     }
 
@@ -93,68 +95,47 @@ If a request is completely unrelated to education, respond:
     const fullPrompt =
         educationInstruction +
         "\n\nUSER REQUEST:\n" +
-        prompt;
+        String(prompt).trim();
 
-const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`,
-    {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "x-goog-api-key": GEMINI_API_KEY
-        },
-        body: JSON.stringify({
-            contents: [
-                {
-                    parts: [
-                        {
-                            text: fullPrompt
-                        }
-                    ]
+    const { data, error } =
+        await supabaseClient.functions.invoke(
+            GEMINI_FUNCTION_NAME,
+            {
+                body: {
+                    prompt: fullPrompt
                 }
-            ]
-        })
-    }
-);
-
-    let data;
-
-    try {
-        data = await response.json();
-    } catch {
-        throw new Error(
-            "Gemini returned an invalid response."
+            }
         );
-    }
 
-    if (!response.ok) {
+    if (error) {
         console.error(
-            "Gemini API error:",
-            data
+            "Studyflow Gemini function error:",
+            error
         );
 
         throw new Error(
-            data?.error?.message ||
-            "Gemini API request failed."
+            error.message ||
+            "Could not connect to Studyflow AI."
         );
     }
 
     const answer =
-        data
-            ?.candidates?.[0]
-            ?.content?.parts
-            ?.map(
-                part => part.text || ""
-            )
-            .join("");
+        data?.answer ||
+        data?.text ||
+        "";
 
     if (!answer) {
+        console.error(
+            "Studyflow Gemini returned:",
+            data
+        );
+
         throw new Error(
-            "Gemini returned no response."
+            "Studyflow AI returned no response."
         );
     }
 
-    return answer.trim();
+    return String(answer).trim();
 }
 
 
@@ -893,6 +874,56 @@ function saveProgress() {
         updateStats();
 
     }
+
+}
+
+
+/* =========================================================
+   ADD TOPIC TO PROGRESS
+========================================================= */
+
+function addTopic(
+    topic
+) {
+
+    const cleanTopic =
+        String(
+            topic || ""
+        ).trim();
+
+    if (!cleanTopic) {
+        return;
+    }
+
+    if (!Array.isArray(progress.topics)) {
+        progress.topics = [];
+    }
+
+    const alreadyExists =
+        progress.topics.some(
+            item =>
+                String(item).toLowerCase() ===
+                cleanTopic.toLowerCase()
+        );
+
+    if (!alreadyExists) {
+        progress.topics.push(cleanTopic);
+    }
+
+    const today =
+        new Date()
+            .toISOString()
+            .split("T")[0];
+
+    if (!Array.isArray(progress.studyDays)) {
+        progress.studyDays = [];
+    }
+
+    if (!progress.studyDays.includes(today)) {
+        progress.studyDays.push(today);
+    }
+
+    saveProgress();
 
 }
 /* =========================================================
@@ -1892,6 +1923,44 @@ if (exploreBtn) {
     );
 
 }
+
+/* =========================================================
+   HOME AI ASK BUTTON
+========================================================= */
+
+const homeQuestion = document.getElementById("homeQuestion");
+const homeAskBtn = document.getElementById("homeAskBtn");
+
+if (homeAskBtn && homeQuestion) {
+
+    homeAskBtn.addEventListener("click", async () => {
+
+        const question = homeQuestion.value.trim();
+
+        if (!question) {
+            showToast("Please enter a question first.");
+            return;
+        }
+
+        const topicInput = document.getElementById("topicInput");
+
+        if (topicInput) {
+            topicInput.value = question;
+        }
+
+        showPage("study");
+
+        const explainBtn =
+            document.getElementById("explainBtn");
+
+        if (explainBtn) {
+            explainBtn.click();
+        }
+
+    });
+
+}
+
 /* =========================================================
    AUTHENTICATION
 ========================================================= */

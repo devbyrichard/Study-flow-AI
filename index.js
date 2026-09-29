@@ -9188,6 +9188,22 @@ async function finishExam() {
 
 }
 
+function updateExamProgressBar() {
+    const progressBar = document.getElementById("examProgressBar");
+
+    if (!progressBar) return;
+
+    if (!examQuestions || examQuestions.length === 0) {
+        progressBar.style.width = "0%";
+        return;
+    }
+
+    const progress =
+        ((currentExamQuestion + 1) / examQuestions.length) * 100;
+
+    progressBar.style.width = `${progress}%`;
+}
+
 
 /* =========================================================
    RETRY EXAM

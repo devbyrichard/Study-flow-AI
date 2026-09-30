@@ -7000,6 +7000,15 @@ async function startExam() {
         }
 
 
+        if (examSetup) {
+
+            examSetup.classList.add(
+                "hidden"
+            );
+
+        }
+
+
         startExamTimer();
 
         renderExamQuestion();
@@ -7032,6 +7041,10 @@ async function startExam() {
 
         if (examContainer) {
 
+            examContainer.classList.remove(
+                "hidden"
+            );
+
             examContainer.innerHTML = `
 
                 <div class="error-state">
@@ -7042,8 +7055,8 @@ async function startExam() {
 
                     <p>
                         ${escapeHTML(
-                            error.message ||
-                            "Something went wrong."
+                            error?.message ||
+                            "Something went wrong while generating your exam."
                         )}
                     </p>
 
@@ -7065,6 +7078,7 @@ async function startExam() {
                 document.getElementById(
                     "tryExamAgainBtn"
                 );
+
 
             if (tryAgain) {
 
@@ -7094,8 +7108,6 @@ async function startExam() {
     }
 
 }
-
-
 /* =========================================================
    START BUTTON
 ========================================================= */

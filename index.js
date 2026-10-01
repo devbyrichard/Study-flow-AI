@@ -6800,10 +6800,6 @@ document
     });
 
 
-/* =========================================================
-   START EXAM
-========================================================= */
-
 async function startExam() {
 
     const subject =
@@ -6812,7 +6808,7 @@ async function startExam() {
     if (!subject) {
 
         showToast(
-            "Enter a subject first."
+            "Select a subject first."
         );
 
         examSubject?.focus();
@@ -6822,18 +6818,8 @@ async function startExam() {
 
 
     const topic =
-        examTopic?.value?.trim();
-
-    if (!topic) {
-
-        showToast(
-            "Enter a topic first."
-        );
-
-        examTopic?.focus();
-
-        return;
-    }
+        examTopic?.value?.trim() ||
+        "the whole subject";
 
 
     const count =
@@ -6880,13 +6866,26 @@ async function startExam() {
     };
 
 
+    /* =========================================
+       SHOW GENERATING STATE
+       DO NOT REPLACE examContainer.innerHTML
+    ========================================= */
+
     if (startExamBtn) {
 
-        startExamBtn.disabled =
-            true;
+        startExamBtn.disabled = true;
 
         startExamBtn.textContent =
             "Generating...";
+
+    }
+
+
+    if (examSetup) {
+
+        examSetup.classList.add(
+            "hidden"
+        );
 
     }
 
@@ -6897,25 +6896,48 @@ async function startExam() {
             "hidden"
         );
 
-        examContainer.innerHTML = `
+    }
 
-            <div class="ai-loading">
 
-                <div class="loading-spinner"></div>
+    /* Show loading inside the existing
+       question area without destroying
+       the exam HTML */
 
-                <h3>
-                    Generating your questions...
-                </h3>
+    if (examQuestion) {
 
-                <p>
-                    Studyflow AI is preparing
-                    your ${escapeHTML(subject)}
-                    assessment.
-                </p>
+        examQuestion.textContent =
+            "Generating your questions...";
 
-            </div>
+    }
 
-        `;
+
+    if (objAnswers) {
+
+        objAnswers.innerHTML = "";
+
+        objAnswers.classList.add(
+            "hidden"
+        );
+
+    }
+
+
+    if (theoryAnswerArea) {
+
+        theoryAnswerArea.classList.add(
+            "hidden"
+        );
+
+    }
+
+
+    if (practiceFeedback) {
+
+        practiceFeedback.innerHTML = "";
+
+        practiceFeedback.classList.add(
+            "hidden"
+        );
 
     }
 
@@ -6926,10 +6948,22 @@ async function startExam() {
             buildExamPrompt();
 
 
+        console.log(
+            "Generating exam with config:",
+            examConfig
+        );
+
+
         const response =
             await askGemini(
                 prompt
             );
+
+
+        console.log(
+            "Gemini exam response:",
+            response
+        );
 
 
         const parsed =
@@ -6974,6 +7008,7 @@ async function startExam() {
         currentExamQuestion =
             0;
 
+
         examFinished =
             false;
 
@@ -7009,6 +7044,37 @@ async function startExam() {
         }
 
 
+        /* Update exam heading */
+
+        const runningExamType =
+            document.getElementById(
+                "runningExamType"
+            );
+
+        const runningExamTitle =
+            document.getElementById(
+                "runningExamTitle"
+            );
+
+
+        if (runningExamType) {
+
+            runningExamType.textContent =
+                examConfig.examType;
+
+        }
+
+
+        if (runningExamTitle) {
+
+            runningExamTitle.textContent =
+                examConfig.subject;
+
+        }
+
+
+        /* Start exam */
+
         startExamTimer();
 
         renderExamQuestion();
@@ -7029,6 +7095,11 @@ async function startExam() {
 
         }
 
+
+        showToast(
+            "Exam generated successfully! 🎓"
+        );
+
     }
 
     catch (error) {
@@ -7039,57 +7110,30 @@ async function startExam() {
         );
 
 
-        if (examContainer) {
+        /* Keep the original exam HTML intact */
 
-            examContainer.classList.remove(
+        if (examSetup) {
+
+            examSetup.classList.remove(
                 "hidden"
             );
 
-            examContainer.innerHTML = `
-
-                <div class="error-state">
-
-                    <h3>
-                        Unable to generate the exam
-                    </h3>
-
-                    <p>
-                        ${escapeHTML(
-                            error?.message ||
-                            "Something went wrong while generating your exam."
-                        )}
-                    </p>
-
-                    <button
-                        type="button"
-                        class="primary-btn"
-                        id="tryExamAgainBtn">
-
-                        Try Again
-
-                    </button>
-
-                </div>
-
-            `;
+        }
 
 
-            const tryAgain =
-                document.getElementById(
-                    "tryExamAgainBtn"
-                );
+        if (examContainer) {
 
-
-            if (tryAgain) {
-
-                tryAgain.addEventListener(
-                    "click",
-                    startExam
-                );
-
-            }
+            examContainer.classList.add(
+                "hidden"
+            );
 
         }
+
+
+        showToast(
+            error?.message ||
+            "Unable to generate the exam."
+        );
 
     }
 
@@ -7108,6 +7152,8 @@ async function startExam() {
     }
 
 }
+
+
 /* =========================================================
    START BUTTON
 ========================================================= */

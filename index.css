@@ -1688,26 +1688,41 @@ input {
     }
 
 }
+/* =========================================
+   HERO FADE + SLIDE ANIMATION
+========================================= */
+
 #typingHeading {
     min-height: 150px;
+    animation: heroFadeSlide 0.8s ease forwards;
 }
 
-#typingHeading::after {
-    content: "|";
-    color: var(--primary);
-    animation: blinkCursor 0.7s infinite;
+#typingHeading span {
+    display: inline-block;
+    animation: heroTextSlide 0.8s ease forwards;
 }
 
-@keyframes blinkCursor {
-
-    0%,
-    50% {
-        opacity: 1;
+@keyframes heroFadeSlide {
+    from {
+        opacity: 0;
+        transform: translateY(18px);
     }
 
-    51%,
-    100% {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes heroTextSlide {
+    from {
         opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 

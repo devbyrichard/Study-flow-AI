@@ -9525,3 +9525,46 @@ document.addEventListener(
 
     }
 );
+/* =========================================
+   HERO FADE + SLIDE TEXT
+========================================= */
+
+const typingHeading = document.getElementById("typingHeading");
+
+const heroPhrases = [
+    "Learn smarter.<br><span>Not harder.</span>",
+    "Study smarter.<br><span>Achieve more.</span>",
+    "Understand better.<br><span>Score higher.</span>",
+    "Prepare better.<br><span>Feel confident.</span>"
+];
+
+let heroPhraseIndex = 0;
+
+function changeHeroPhrase() {
+    if (!typingHeading) return;
+
+    // Fade and slide out
+    typingHeading.classList.remove("hero-visible");
+    typingHeading.classList.add("hero-hidden");
+
+    setTimeout(() => {
+        // Change the text
+        heroPhraseIndex =
+            (heroPhraseIndex + 1) % heroPhrases.length;
+
+        typingHeading.innerHTML =
+            heroPhrases[heroPhraseIndex];
+
+        // Fade and slide in
+        typingHeading.classList.remove("hero-hidden");
+        typingHeading.classList.add("hero-visible");
+    }, 500);
+}
+
+// Show the first phrase
+if (typingHeading) {
+    typingHeading.classList.add("hero-visible");
+
+    // Change phrase every 3 seconds
+    setInterval(changeHeroPhrase, 3000);
+}

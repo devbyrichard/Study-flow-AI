@@ -6792,3 +6792,2510 @@ pre,
         transition-duration: 0.01ms !important;
     }
 }
+
+/* =========================================
+   STUDYFLOW AI — HOMEPAGE POLISH
+   CSS only: preserves existing functionality
+========================================= */
+
+/* Homepage layout */
+#homePage {
+    --home-accent-soft: rgba(99, 91, 255, 0.08);
+}
+
+#homePage .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    align-items: center;
+    gap: clamp(28px, 4vw, 56px);
+    margin-bottom: 76px;
+    padding: clamp(26px, 4vw, 48px) 0;
+}
+
+#homePage .hero-text {
+    max-width: 600px;
+    margin-bottom: 0;
+}
+
+#homePage .small-label {
+    display: inline-block;
+    line-height: 1.6;
+}
+
+#homePage .hero h1 {
+    font-size: clamp(42px, 5.2vw, 68px);
+    line-height: 1.06;
+    letter-spacing: -2.8px;
+    margin: 20px 0;
+    overflow-wrap: break-word;
+}
+
+#homePage .hero h1 span {
+    color: var(--primary);
+}
+
+#homePage .hero p {
+    max-width: 470px;
+    font-size: 16px;
+    line-height: 1.85;
+    color: var(--muted);
+}
+
+/* AI question box */
+#homePage .ai-box {
+    min-width: 0;
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    background: var(--surface);
+    box-shadow: 0 18px 55px rgba(40, 35, 100, 0.09);
+    transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+#homePage .ai-box:focus-within {
+    border-color: rgba(99, 91, 255, 0.55);
+    box-shadow: 0 18px 55px rgba(40, 35, 100, 0.13);
+}
+
+#homePage .ai-box-top {
+    min-height: 62px;
+    padding: 17px 20px;
+}
+
+#homePage .ai-status {
+    gap: 10px;
+    font-size: 14px;
+}
+
+#homePage .status-dot {
+    flex-shrink: 0;
+}
+
+#homePage .ai-powered {
+    letter-spacing: 0.8px;
+}
+
+#homePage .ai-box textarea {
+    display: block;
+    min-height: 155px;
+    height: 155px;
+    padding: 22px;
+    line-height: 1.7;
+    font-size: 15px;
+}
+
+#homePage .ai-box textarea:focus {
+    outline: none;
+}
+
+#homePage .ai-box textarea::placeholder {
+    opacity: 0.85;
+}
+
+#homePage .ai-box-bottom {
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 14px;
+    padding: 16px 18px;
+}
+
+#homePage .quick-suggestions {
+    flex: 1 1 220px;
+    gap: 8px;
+}
+
+#homePage .suggestion {
+    border-radius: 999px;
+    padding: 9px 12px;
+    line-height: 1.4;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+#homePage .suggestion:hover {
+    background: var(--home-accent-soft);
+}
+
+#homePage #homeAskBtn {
+    border-radius: 12px;
+    padding: 13px 18px;
+    box-shadow: 0 5px 14px rgba(99, 91, 255, 0.18);
+}
+
+#homePage #homeAskBtn:hover {
+    box-shadow: 0 8px 20px rgba(99, 91, 255, 0.24);
+}
+
+/* Homepage sections */
+#homePage .section {
+    margin-bottom: 64px;
+}
+
+#homePage .section-heading {
+    align-items: flex-end;
+    margin-bottom: 22px;
+}
+
+#homePage .section-heading h2 {
+    margin-top: 8px;
+    font-size: clamp(22px, 3vw, 28px);
+    line-height: 1.3;
+    letter-spacing: -0.8px;
+}
+
+/* Two matching action cards */
+#homePage .action-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+#homePage .action-card {
+    min-width: 0;
+    min-height: 220px;
+    padding: 26px;
+    border-radius: 18px;
+    box-shadow: 0 3px 14px rgba(31, 35, 61, 0.025);
+    transition: transform 0.22s ease, border-color 0.22s ease,
+                box-shadow 0.22s ease;
+}
+
+#homePage .action-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(99, 91, 255, 0.5);
+    box-shadow: 0 14px 35px rgba(31, 35, 61, 0.08);
+}
+
+#homePage .action-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    margin-bottom: 22px;
+}
+
+#homePage .action-card h3 {
+    font-size: 18px;
+    letter-spacing: -0.3px;
+}
+
+#homePage .action-card p {
+    line-height: 1.75;
+}
+
+#homePage .card-link {
+    display: inline-block;
+    margin-top: 22px;
+}
+
+/* Progress statistics */
+#homePage .stats-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+
+#homePage .stat-card {
+    min-width: 0;
+    padding: 20px;
+    border-radius: 16px;
+    gap: 14px;
+    transition: border-color 0.2s, transform 0.2s;
+}
+
+#homePage .stat-card:hover {
+    border-color: rgba(99, 91, 255, 0.35);
+    transform: translateY(-2px);
+}
+
+#homePage .stat-icon {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 13px;
+}
+
+#homePage .stat-card strong {
+    font-size: clamp(20px, 2.5vw, 26px);
+}
+
+/* Recent activity */
+#homePage .recent-item {
+    border-radius: 14px;
+    padding: 17px 18px;
+    transition: border-color 0.2s, background 0.2s;
+}
+
+#homePage .recent-item:hover {
+    border-color: rgba(99, 91, 255, 0.35);
+}
+
+#homePage .empty-state {
+    border-radius: 18px;
+    padding: 42px 20px;
+    line-height: 1.7;
+}
+
+/* Dark mode refinement */
+body.dark #homePage .ai-box,
+body.dark #homePage .action-card,
+body.dark #homePage .stat-card,
+body.dark #homePage .recent-item {
+    box-shadow: none;
+}
+
+body.dark #homePage .ai-box:focus-within {
+    box-shadow: 0 0 0 3px rgba(99, 91, 255, 0.12);
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+    #homePage .hero {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 30px;
+        padding: 22px 0 10px;
+        margin-bottom: 58px;
+    }
+
+    #homePage .hero-text {
+        max-width: 680px;
+    }
+
+    #homePage .hero p {
+        max-width: 600px;
+    }
+
+    #homePage .ai-box {
+        width: 100%;
+    }
+
+    #homePage .stats-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    #homePage .stat-card {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 12px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    #homePage .hero {
+        gap: 25px;
+        padding-top: 10px;
+        margin-bottom: 48px;
+    }
+
+    #homePage .hero h1 {
+        font-size: clamp(38px, 10vw, 52px);
+        letter-spacing: -1.8px;
+        line-height: 1.1;
+        margin: 15px 0;
+    }
+
+    #homePage .hero p {
+        font-size: 15px;
+        line-height: 1.75;
+    }
+
+    #homePage .ai-box {
+        border-radius: 18px;
+    }
+
+    #homePage .ai-box-top {
+        padding: 15px;
+    }
+
+    #homePage .ai-box textarea {
+        min-height: 135px;
+        height: 135px;
+        padding: 18px 15px;
+        font-size: 14px;
+    }
+
+    #homePage .ai-box-bottom {
+        align-items: stretch;
+        padding: 14px;
+    }
+
+    #homePage .quick-suggestions {
+        flex-basis: 100%;
+    }
+
+    #homePage .suggestion {
+        font-size: 11px;
+        padding: 8px 10px;
+    }
+
+    #homePage #homeAskBtn {
+        width: 100%;
+    }
+
+    #homePage .section {
+        margin-bottom: 48px;
+    }
+
+    #homePage .section-heading {
+        margin-bottom: 18px;
+    }
+
+    #homePage .action-grid,
+    #homePage .stats-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 14px;
+    }
+
+    #homePage .action-card {
+        min-height: auto;
+        padding: 22px;
+    }
+
+    #homePage .action-icon {
+        margin-bottom: 17px;
+    }
+
+    #homePage .stat-card {
+        flex-direction: row;
+        align-items: center;
+        padding: 18px;
+    }
+
+    #homePage .empty-state {
+        padding: 32px 16px;
+    }
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    #homePage .ai-box,
+    #homePage .action-card,
+    #homePage .stat-card,
+    #homePage .recent-item,
+    #homePage .suggestion,
+    #homePage #homeAskBtn {
+        transition: none;
+    }
+
+    #homePage .action-card:hover,
+    #homePage .stat-card:hover {
+        transform: none;
+    }
+}
+
+/* FIX: Homepage suggestion buttons are too large */
+#homePage .quick-suggestions {
+    display: flex;
+    flex: 1 1 100%;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+#homePage .suggestion {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    min-width: 0;
+    height: auto;
+    min-height: 0;
+    padding: 9px 14px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--surface-2);
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.4;
+    white-space: nowrap;
+}
+
+#homePage .ai-box-bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+}
+
+#homePage #homeAskBtn {
+    display: inline-flex;
+    align-self: flex-start;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    min-width: 0;
+    min-height: 0;
+    padding: 13px 22px;
+    border-radius: 12px;
+    font-size: 14px;
+}
+
+/* Keep controls compact on phones too */
+@media (max-width: 600px) {
+    #homePage .suggestion {
+        white-space: normal;
+        max-width: 100%;
+        font-size: 12px;
+        padding: 8px 11px;
+    }
+
+    #homePage #homeAskBtn {
+        align-self: stretch;
+        width: 100%;
+    }
+}
+
+/* =========================================
+   STUDYFLOW AI — NAVBAR POLISH
+========================================= */
+
+.navbar {
+    min-height: 72px;
+    height: auto;
+    padding: 12px clamp(18px, 5%, 64px);
+    gap: 24px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 3px 16px rgba(31, 35, 61, 0.035);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+}
+
+.logo {
+    flex-shrink: 0;
+    gap: 10px;
+    font-size: 21px;
+    font-weight: 800;
+    letter-spacing: -0.6px;
+}
+
+.logo-icon {
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    transition: transform 0.2s ease;
+}
+
+.logo:hover .logo-icon {
+    transform: rotate(-6deg) scale(1.04);
+}
+
+.main-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    gap: 5px;
+    min-width: 0;
+}
+
+.nav-link {
+    position: relative;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--muted);
+    padding: 10px 13px;
+    border-radius: 11px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+    transition:
+        color 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.nav-link:hover {
+    color: var(--text);
+    background: var(--surface-2);
+}
+
+.nav-link.active {
+    color: var(--primary);
+    background: rgba(99, 91, 255, 0.09);
+    border-color: rgba(99, 91, 255, 0.12);
+}
+
+.nav-actions {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--surface);
+    color: var(--text);
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.icon-btn:hover {
+    background: var(--surface-2);
+    border-color: rgba(99, 91, 255, 0.4);
+}
+
+.profile-menu {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.profile {
+    width: 40px;
+    height: 40px;
+    border: 2px solid rgba(99, 91, 255, 0.18);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.profile:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(99, 91, 255, 0.2);
+}
+
+.profile-dropdown {
+    z-index: 200;
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    background: var(--surface);
+    box-shadow: 0 16px 45px rgba(25, 25, 50, 0.13);
+    overflow: hidden;
+}
+
+.profile-dropdown button {
+    width: 100%;
+    min-height: 42px;
+    padding: 11px 15px;
+    border: 0;
+    background: transparent;
+    color: var(--text);
+    text-align: left;
+    font: inherit;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.18s ease;
+}
+
+.profile-dropdown button:hover {
+    background: var(--surface-2);
+}
+
+.profile-dropdown #authUserInfo {
+    overflow-wrap: anywhere;
+    border-bottom: 1px solid var(--border);
+}
+
+.mobile-menu-btn {
+    display: none;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    background: var(--surface);
+    color: var(--text);
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* Keyboard accessibility */
+.navbar button:focus-visible,
+.navbar a:focus-visible {
+    outline: 3px solid rgba(99, 91, 255, 0.55);
+    outline-offset: 3px;
+}
+
+/* Tablet and smaller laptop screens */
+@media (max-width: 900px) {
+    .navbar {
+        gap: 12px;
+        padding-inline: 20px;
+    }
+
+    .main-nav {
+        gap: 2px;
+    }
+
+    .nav-link {
+        padding: 9px 8px;
+        font-size: 12px;
+    }
+
+    .logo {
+        font-size: 19px;
+    }
+}
+
+/* Mobile navigation */
+@media (max-width: 700px) {
+    .navbar {
+        min-height: 66px;
+        padding: 10px 16px;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .logo {
+        margin-right: auto;
+        font-size: 19px;
+    }
+
+    .mobile-menu-btn {
+        display: inline-flex;
+        order: 2;
+    }
+
+    .nav-actions {
+        order: 3;
+        gap: 7px;
+    }
+
+    .main-nav {
+        display: none;
+        order: 4;
+        flex: 0 0 100%;
+        width: 100%;
+        padding: 8px;
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        background: var(--surface);
+        align-items: stretch;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .main-nav.mobile-open {
+        display: flex;
+    }
+
+    .nav-link {
+        width: 100%;
+        padding: 12px 14px;
+        border-radius: 9px;
+        text-align: left;
+        font-size: 14px;
+    }
+
+    .profile-dropdown {
+        max-width: calc(100vw - 24px);
+    }
+}
+
+/* Dark mode */
+body.dark .navbar {
+    box-shadow: 0 3px 16px rgba(0, 0, 0, 0.12);
+}
+
+body.dark .nav-link.active {
+    background: rgba(125, 117, 255, 0.14);
+    border-color: rgba(125, 117, 255, 0.18);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .navbar *,
+    .navbar *::before,
+    .navbar *::after {
+        transition: none !important;
+    }
+}
+
+/* =========================================
+   STUDYFLOW AI — HOMEPAGE FINAL POLISH
+========================================= */
+
+/* Reduce excess space around the hero */
+#homePage .hero {
+    gap: clamp(28px, 4vw, 48px);
+    padding-top: 12px;
+    padding-bottom: 0;
+    margin-bottom: 48px;
+}
+
+#homePage .hero-text {
+    max-width: 560px;
+}
+
+#homePage .hero h1 {
+    font-size: clamp(40px, 4.5vw, 62px);
+    line-height: 1.08;
+    letter-spacing: -2.4px;
+    margin: 16px 0;
+}
+
+#homePage .hero p {
+    font-size: 15px;
+    line-height: 1.75;
+}
+
+/* Make the AI question box more compact */
+#homePage .ai-box {
+    border-radius: 20px;
+}
+
+#homePage .ai-box-top {
+    min-height: 56px;
+    padding: 14px 20px;
+}
+
+#homePage .ai-box textarea {
+    height: 125px;
+    min-height: 125px;
+    padding: 20px;
+    font-size: 14px;
+}
+
+#homePage .ai-box-bottom {
+    gap: 12px;
+    padding: 14px 18px;
+}
+
+#homePage .quick-suggestions {
+    gap: 8px;
+}
+
+#homePage .suggestion {
+    padding: 8px 11px;
+    font-size: 12px;
+}
+
+/* Smaller, balanced Ask button on desktop */
+#homePage #homeAskBtn {
+    padding: 12px 18px;
+    font-size: 13px;
+}
+
+/* Bring homepage sections closer together */
+#homePage .section {
+    margin-bottom: 48px;
+}
+
+#homePage .section-heading {
+    margin-bottom: 18px;
+}
+
+#homePage .section-heading h2 {
+    font-size: clamp(22px, 2.5vw, 27px);
+}
+
+/* Keep action cards balanced */
+#homePage .action-card {
+    min-height: 205px;
+    padding: 24px;
+}
+
+#homePage .action-icon {
+    margin-bottom: 18px;
+}
+
+/* More compact progress cards */
+#homePage .stat-card {
+    padding: 18px;
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+    #homePage .hero {
+        gap: 26px;
+        padding-top: 8px;
+        margin-bottom: 42px;
+    }
+
+    #homePage .hero h1 {
+        font-size: clamp(38px, 7vw, 54px);
+    }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    #homePage .hero {
+        gap: 22px;
+        padding-top: 4px;
+        margin-bottom: 38px;
+    }
+
+    #homePage .hero h1 {
+        font-size: clamp(36px, 10vw, 48px);
+        line-height: 1.1;
+        letter-spacing: -1.7px;
+    }
+
+    #homePage .hero p {
+        font-size: 14px;
+    }
+
+    #homePage .ai-box textarea {
+        height: 115px;
+        min-height: 115px;
+        padding: 16px;
+    }
+
+    #homePage .ai-box-bottom {
+        padding: 12px;
+    }
+
+    #homePage .section {
+        margin-bottom: 40px;
+    }
+
+    #homePage .action-card {
+        min-height: 0;
+        padding: 20px;
+    }
+
+    #homePage .stat-card {
+        padding: 16px;
+    }
+}
+
+/* =========================================
+   STUDYFLOW AI — HOMEPAGE CARDS & ACTIVITY
+   CSS ONLY — KEEP EXISTING JAVASCRIPT
+========================================= */
+
+/* Consistent homepage section headings */
+#homePage .section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+#homePage .section-heading h2 {
+    color: var(--text);
+    letter-spacing: -0.7px;
+}
+
+/* Study & Learn / Take an Exam cards */
+#homePage .action-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+#homePage .action-card {
+    position: relative;
+    overflow: hidden;
+    min-width: 0;
+    padding: 26px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    background: var(--surface);
+    box-shadow: 0 4px 18px rgba(31, 35, 61, 0.035);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease,
+                transform 0.2s ease;
+}
+
+#homePage .action-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(99, 91, 255, 0.4);
+    box-shadow: 0 12px 30px rgba(31, 35, 61, 0.075);
+}
+
+#homePage .action-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 20px;
+    border-radius: 14px;
+    background: rgba(99, 91, 255, 0.09);
+    color: var(--primary);
+}
+
+#homePage .action-card h3 {
+    margin-bottom: 9px;
+    color: var(--text);
+    font-size: 18px;
+    line-height: 1.4;
+}
+
+#homePage .action-card p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.75;
+}
+
+#homePage .card-link {
+    margin-top: 20px;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+/* Progress statistics */
+#homePage .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+
+#homePage .stat-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 0;
+    padding: 20px;
+    border: 1px solid var(--border);
+    border-radius: 17px;
+    background: var(--surface);
+    transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+#homePage .stat-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(99, 91, 255, 0.35);
+}
+
+#homePage .stat-icon {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 13px;
+    background: rgba(99, 91, 255, 0.09);
+    color: var(--primary);
+}
+
+#homePage .stat-card strong {
+    display: block;
+    color: var(--text);
+    font-size: 24px;
+    line-height: 1.3;
+}
+
+#homePage .stat-card p,
+#homePage .stat-card span {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+/* Recent activity */
+#homePage .recent-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 18px;
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    background: var(--surface);
+    transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+#homePage .recent-item + .recent-item {
+    margin-top: 10px;
+}
+
+#homePage .recent-item:hover {
+    border-color: rgba(99, 91, 255, 0.35);
+}
+
+#homePage .empty-state {
+    padding: 34px 20px;
+    border: 1px dashed var(--border);
+    border-radius: 18px;
+    color: var(--muted);
+    text-align: center;
+    line-height: 1.7;
+}
+
+/* Dark mode */
+body.dark #homePage .action-card,
+body.dark #homePage .stat-card,
+body.dark #homePage .recent-item {
+    box-shadow: none;
+}
+
+body.dark #homePage .action-card:hover,
+body.dark #homePage .stat-card:hover {
+    border-color: rgba(125, 117, 255, 0.55);
+}
+
+/* Tablet */
+@media (max-width: 800px) {
+    #homePage .action-grid {
+        gap: 14px;
+    }
+
+    #homePage .action-card {
+        padding: 21px;
+    }
+
+    #homePage .stats-grid {
+        gap: 12px;
+    }
+
+    #homePage .stat-card {
+        padding: 15px;
+        gap: 10px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    #homePage .action-grid,
+    #homePage .stats-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    #homePage .action-card {
+        padding: 21px;
+    }
+
+    #homePage .stat-card {
+        padding: 17px;
+    }
+
+    #homePage .stat-card strong {
+        font-size: 22px;
+    }
+
+    #homePage .recent-item {
+        padding: 14px;
+    }
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    #homePage .action-card,
+    #homePage .stat-card,
+    #homePage .recent-item {
+        transition: none;
+    }
+
+    #homePage .action-card:hover,
+    #homePage .stat-card:hover {
+        transform: none;
+    }
+}
+
+/* Homepage: tighter vertical layout */
+#homePage .hero {
+    padding-top: 0;
+    margin-bottom: 34px;
+    gap: 36px;
+}
+
+#homePage .hero h1 {
+    margin-top: 12px;
+    margin-bottom: 14px;
+    font-size: clamp(38px, 4.2vw, 58px);
+    line-height: 1.08;
+}
+
+#homePage .hero p {
+    max-width: 500px;
+    line-height: 1.7;
+}
+
+#homePage .section {
+    margin-bottom: 38px;
+}
+
+#homePage .section-heading {
+    margin-bottom: 16px;
+}
+
+#homePage .action-card {
+    min-height: 0;
+    padding: 22px;
+}
+
+#homePage .action-icon {
+    width: 44px;
+    height: 44px;
+    margin-bottom: 16px;
+}
+
+#homePage .card-link {
+    margin-top: 16px;
+}
+
+/* Keep the layout comfortable on smaller screens */
+@media (max-width: 900px) {
+    #homePage .hero {
+        gap: 24px;
+        margin-bottom: 32px;
+    }
+}
+
+@media (max-width: 600px) {
+    #homePage .hero h1 {
+        font-size: clamp(36px, 9vw, 46px);
+    }
+
+    #homePage .section {
+        margin-bottom: 30px;
+    }
+
+    #homePage .action-card {
+        padding: 19px;
+    }
+}
+
+/* =========================================
+   HOMEPAGE — PROGRESS & ACTIVITY FINISH
+========================================= */
+
+/* Progress cards */
+#homePage .stat-card {
+    border-radius: 16px;
+    padding: 18px 20px;
+    box-shadow: 0 5px 20px rgba(25, 30, 65, 0.025);
+}
+
+#homePage .stat-icon {
+    border-radius: 13px;
+    transition: transform 0.2s ease;
+}
+
+#homePage .stat-card:hover .stat-icon {
+    transform: scale(1.06);
+}
+
+#homePage .stat-card strong {
+    letter-spacing: -0.6px;
+    line-height: 1.25;
+}
+
+/* Learning activity empty state */
+#homePage .empty-state {
+    min-height: 190px;
+    padding: 28px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    border: 1px dashed var(--border);
+    border-radius: 20px;
+    background: var(--surface);
+    text-align: center;
+}
+
+#homePage .empty-state > :first-child {
+    margin-bottom: 4px;
+    font-size: 30px;
+}
+
+#homePage .empty-state p {
+    margin: 0;
+    line-height: 1.65;
+    color: var(--muted);
+}
+
+#homePage .empty-state button {
+    margin-top: 8px;
+}
+
+/* Activity items when data is available */
+#homePage .recent-item {
+    border-radius: 14px;
+    padding: 15px 18px;
+    background: var(--surface);
+}
+
+#homePage .recent-item:hover {
+    background: var(--surface-2);
+}
+
+/* Dark mode */
+body.dark #homePage .stat-card,
+body.dark #homePage .empty-state,
+body.dark #homePage .recent-item {
+    box-shadow: none;
+}
+
+@media (max-width: 600px) {
+    #homePage .stat-card {
+        padding: 16px;
+    }
+
+    #homePage .empty-state {
+        min-height: 160px;
+        padding: 24px 16px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #homePage .stat-icon {
+        transition: none;
+    }
+}
+
+/* =========================================
+   HOMEPAGE — PROGRESS & ACTIVITY FINISH
+========================================= */
+
+/* Progress cards */
+#homePage .stat-card {
+    border-radius: 16px;
+    padding: 18px 20px;
+    box-shadow: 0 5px 20px rgba(25, 30, 65, 0.025);
+}
+
+#homePage .stat-icon {
+    border-radius: 13px;
+    transition: transform 0.2s ease;
+}
+
+#homePage .stat-card:hover .stat-icon {
+    transform: scale(1.06);
+}
+
+#homePage .stat-card strong {
+    letter-spacing: -0.6px;
+    line-height: 1.25;
+}
+
+/* Learning activity empty state */
+#homePage .empty-state {
+    min-height: 190px;
+    padding: 28px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    border: 1px dashed var(--border);
+    border-radius: 20px;
+    background: var(--surface);
+    text-align: center;
+}
+
+#homePage .empty-state > :first-child {
+    margin-bottom: 4px;
+    font-size: 30px;
+}
+
+#homePage .empty-state p {
+    margin: 0;
+    line-height: 1.65;
+    color: var(--muted);
+}
+
+#homePage .empty-state button {
+    margin-top: 8px;
+}
+
+/* Activity items when data is available */
+#homePage .recent-item {
+    border-radius: 14px;
+    padding: 15px 18px;
+    background: var(--surface);
+}
+
+#homePage .recent-item:hover {
+    background: var(--surface-2);
+}
+
+/* Dark mode */
+body.dark #homePage .stat-card,
+body.dark #homePage .empty-state,
+body.dark #homePage .recent-item {
+    box-shadow: none;
+}
+
+@media (max-width: 600px) {
+    #homePage .stat-card {
+        padding: 16px;
+    }
+
+    #homePage .empty-state {
+        min-height: 160px;
+        padding: 24px 16px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #homePage .stat-icon {
+        transition: none;
+    }
+}
+
+/* =========================================
+   STUDYFLOW AI — DASHBOARD POLISH
+   CSS ONLY — PRESERVE EXISTING FUNCTIONALITY
+========================================= */
+
+/* Dashboard page layout */
+#dashboardPage {
+    --dashboard-accent: rgba(99, 91, 255, 0.09);
+}
+
+#dashboardPage .page-header {
+    margin-bottom: 32px;
+}
+
+#dashboardPage h1 {
+    letter-spacing: -1.5px;
+}
+
+#dashboardPage h2 {
+    letter-spacing: -0.6px;
+}
+
+/* Four statistics cards */
+#dashboardPage .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+}
+
+#dashboardPage .stat-card {
+    min-width: 0;
+    padding: 20px;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    background: var(--surface);
+    transition: transform 0.2s ease, border-color 0.2s ease,
+                box-shadow 0.2s ease;
+}
+
+#dashboardPage .stat-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(99, 91, 255, 0.35);
+    box-shadow: 0 10px 28px rgba(31, 35, 61, 0.055);
+}
+
+#dashboardPage .stat-icon {
+    flex-shrink: 0;
+    border-radius: 14px;
+    background: var(--dashboard-accent);
+}
+
+#dashboardPage .stat-card strong {
+    font-size: clamp(22px, 2vw, 28px);
+    letter-spacing: -0.6px;
+    line-height: 1.3;
+}
+
+/* Saved Notes and Recently Studied panels */
+#dashboardPage .dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+    align-items: stretch;
+}
+
+#dashboardPage .dashboard-card {
+    min-width: 0;
+    padding: 26px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    background: var(--surface);
+    box-shadow: 0 5px 22px rgba(31, 35, 61, 0.025);
+}
+
+#dashboardPage .dashboard-card h2 {
+    font-size: 23px;
+    line-height: 1.35;
+}
+
+#dashboardPage .dashboard-card-header {
+    margin-bottom: 22px;
+}
+
+/* Empty states */
+#dashboardPage .empty-state {
+    min-height: 180px;
+    padding: 28px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border: 1px dashed var(--border);
+    border-radius: 18px;
+    background: var(--background);
+    text-align: center;
+}
+
+#dashboardPage .empty-state p {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.7;
+}
+
+#dashboardPage .empty-state button {
+    margin-top: 6px;
+}
+
+/* Saved note cards, when notes exist */
+#dashboardPage .saved-note,
+#dashboardPage .note-card {
+    min-width: 0;
+    border-radius: 14px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#dashboardPage .saved-note:hover,
+#dashboardPage .note-card:hover {
+    border-color: rgba(99, 91, 255, 0.35);
+}
+
+/* Recently studied items, when topics exist */
+#dashboardPage .recent-item {
+    padding: 15px 16px;
+    border-radius: 14px;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+#dashboardPage .recent-item + .recent-item {
+    margin-top: 10px;
+}
+
+#dashboardPage .recent-item:hover {
+    background: var(--background);
+    border-color: rgba(99, 91, 255, 0.3);
+}
+
+/* Dark mode */
+body.dark #dashboardPage .stat-card,
+body.dark #dashboardPage .dashboard-card {
+    box-shadow: none;
+}
+
+body.dark #dashboardPage .stat-card:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* Tablet */
+@media (max-width: 1000px) {
+    #dashboardPage .stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    #dashboardPage .dashboard-grid {
+        gap: 16px;
+    }
+
+    #dashboardPage .dashboard-card {
+        padding: 21px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 650px) {
+    #dashboardPage .stats-grid,
+    #dashboardPage .dashboard-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    #dashboardPage .stats-grid {
+        gap: 12px;
+    }
+
+    #dashboardPage .stat-card {
+        padding: 17px;
+    }
+
+    #dashboardPage .dashboard-card {
+        padding: 18px;
+        border-radius: 17px;
+    }
+
+    #dashboardPage .dashboard-card h2 {
+        font-size: 21px;
+    }
+
+    #dashboardPage .empty-state {
+        min-height: 150px;
+        padding: 22px 15px;
+    }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    #dashboardPage .stat-card,
+    #dashboardPage .saved-note,
+    #dashboardPage .note-card,
+    #dashboardPage .recent-item {
+        transition: none;
+    }
+
+    #dashboardPage .stat-card:hover {
+        transform: none;
+    }
+}
+
+/* =========================================
+   STUDYFLOW AI — EXPLAIN PAGE POLISH
+   CSS ONLY — KEEP EXISTING FUNCTIONALITY
+========================================= */
+
+/* Main Explain page heading */
+#studyPage > h1,
+#studyPage .page-header h1 {
+    letter-spacing: -1.5px;
+    line-height: 1.12;
+}
+
+#studyPage > p,
+#studyPage .page-header p {
+    color: var(--muted);
+    line-height: 1.75;
+}
+
+/* Main two-column layout */
+#studyPage .explain-layout,
+#studyPage .study-layout,
+#studyPage .explain-grid {
+    align-items: stretch;
+    gap: 20px;
+}
+
+/* Main input and response panels */
+#studyPage .explain-card,
+#studyPage .input-panel,
+#studyPage .response-panel,
+#studyPage .explanation-panel {
+    min-width: 0;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    background: var(--surface);
+    box-shadow: 0 8px 28px rgba(31, 35, 61, 0.035);
+}
+
+/* Form labels */
+#studyPage label {
+    font-weight: 650;
+    line-height: 1.5;
+}
+
+/* Topic text area */
+#studyPage textarea {
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    background: var(--background);
+    color: var(--text);
+    line-height: 1.7;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#studyPage textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(99, 91, 255, 0.11);
+}
+
+#studyPage textarea::placeholder {
+    color: var(--muted);
+    opacity: 0.85;
+}
+
+/* Level and explanation-style selectors */
+#studyPage select {
+    max-width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background-color: var(--background);
+    color: var(--text);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#studyPage select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(99, 91, 255, 0.1);
+}
+
+/* Primary action buttons */
+#studyPage button {
+    transition: transform 0.18s ease, box-shadow 0.18s ease,
+                border-color 0.18s ease;
+}
+
+#studyPage button:focus-visible {
+    outline: 3px solid rgba(99, 91, 255, 0.35);
+    outline-offset: 3px;
+}
+
+#studyPage button:active {
+    transform: scale(0.985);
+}
+
+/* Save explanation button */
+#studyPage #saveExplanationBtn,
+#studyPage #saveNoteBtn {
+    border-radius: 13px;
+}
+
+/* Weak quiz topics panel */
+#studyPage .weak-topics,
+#studyPage .weak-topics-card,
+#studyPage #weakTopicsContainer {
+    border: 1px solid var(--border);
+    border-radius: 17px;
+    background: var(--surface);
+}
+
+#studyPage .weak-topics h3,
+#studyPage .weak-topics-card h3 {
+    letter-spacing: -0.35px;
+}
+
+#studyPage .empty-state {
+    border: 1px dashed var(--border);
+    border-radius: 16px;
+    background: var(--background);
+    color: var(--muted);
+    line-height: 1.75;
+}
+
+/* AI response content */
+#studyPage .explanation-content,
+#studyPage .ai-response,
+#studyPage .response-content {
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.85;
+    overflow-wrap: anywhere;
+}
+
+#studyPage .explanation-content h2,
+#studyPage .explanation-content h3,
+#studyPage .ai-response h2,
+#studyPage .ai-response h3,
+#studyPage .response-content h2,
+#studyPage .response-content h3 {
+    margin: 22px 0 10px;
+    line-height: 1.4;
+    letter-spacing: -0.4px;
+}
+
+#studyPage .explanation-content p,
+#studyPage .ai-response p,
+#studyPage .response-content p {
+    margin-bottom: 14px;
+}
+
+#studyPage .explanation-content ul,
+#studyPage .explanation-content ol,
+#studyPage .ai-response ul,
+#studyPage .ai-response ol,
+#studyPage .response-content ul,
+#studyPage .response-content ol {
+    padding-left: 24px;
+    margin-bottom: 16px;
+}
+
+#studyPage .explanation-content li,
+#studyPage .ai-response li,
+#studyPage .response-content li {
+    margin-bottom: 7px;
+}
+
+/* Read-aloud controls */
+#studyPage #readAloudBtn,
+#studyPage #stopReadingBtn {
+    border-radius: 13px;
+}
+
+/* Mobile layout */
+@media (max-width: 700px) {
+    #studyPage .explain-layout,
+    #studyPage .study-layout,
+    #studyPage .explain-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 16px;
+    }
+
+    #studyPage .explain-card,
+    #studyPage .input-panel,
+    #studyPage .response-panel,
+    #studyPage .explanation-panel {
+        border-radius: 17px;
+    }
+
+    #studyPage textarea {
+        font-size: 15px;
+    }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    #studyPage button,
+    #studyPage textarea,
+    #studyPage select {
+        transition: none;
+    }
+}
+
+/* =========================================
+   STUDYFLOW AI — EXAMS PAGE POLISH
+   CSS ONLY — PRESERVE EXISTING FUNCTIONALITY
+========================================= */
+
+#examsPage {
+    --exam-accent-soft: rgba(99, 91, 255, 0.08);
+}
+
+/* Page heading */
+#examsPage h1 {
+    letter-spacing: -1.4px;
+    line-height: 1.15;
+}
+
+#examsPage > p {
+    color: var(--muted);
+    line-height: 1.7;
+}
+
+/* Main exam setup panel */
+#examsPage .exam-setup,
+#examsPage #examSetup {
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    background: var(--surface);
+    box-shadow: 0 8px 28px rgba(31, 35, 61, 0.035);
+}
+
+/* Form labels */
+#examsPage label {
+    font-weight: 650;
+    line-height: 1.5;
+}
+
+/* Selects and topic input */
+#examsPage input:not([type="radio"]):not([type="checkbox"]),
+#examsPage select,
+#examsPage textarea {
+    max-width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 13px;
+    background-color: var(--surface);
+    color: var(--text);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#examsPage input:focus,
+#examsPage select:focus,
+#examsPage textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(99, 91, 255, 0.1);
+}
+
+/* Question type and exam mode options
+   These styles apply only if the matching
+   classes exist in your HTML. */
+#examsPage .question-type-card,
+#examsPage .question-type-option,
+#examsPage .exam-mode-card,
+#examsPage .mode-option {
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    background: var(--surface);
+    transition: border-color 0.2s ease,
+                background 0.2s ease,
+                box-shadow 0.2s ease,
+                transform 0.2s ease;
+}
+
+#examsPage .question-type-card:hover,
+#examsPage .question-type-option:hover,
+#examsPage .exam-mode-card:hover,
+#examsPage .mode-option:hover {
+    border-color: rgba(99, 91, 255, 0.55);
+    transform: translateY(-2px);
+}
+
+/* Highlight selected options */
+#examsPage .question-type-card.selected,
+#examsPage .question-type-option.selected,
+#examsPage .exam-mode-card.selected,
+#examsPage .mode-option.selected,
+#examsPage .question-type-card.active,
+#examsPage .exam-mode-card.active {
+    border-color: var(--primary);
+    background: var(--exam-accent-soft);
+    box-shadow: inset 0 0 0 1px var(--primary);
+}
+
+/* Buttons */
+#examsPage button {
+    border-radius: 12px;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+#examsPage button:focus-visible {
+    outline: 3px solid rgba(99, 91, 255, 0.35);
+    outline-offset: 3px;
+}
+
+#examsPage button:active {
+    transform: scale(0.985);
+}
+
+/* Question cards during an exam */
+#examsPage .question-card,
+#examsPage .exam-question {
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    background: var(--surface);
+    padding: 22px;
+}
+
+/* Answer options */
+#examsPage .answer-option {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+#examsPage .answer-option:hover {
+    border-color: rgba(99, 91, 255, 0.5);
+}
+
+/* Results panel */
+#examsPage .exam-results,
+#examsPage #examResults {
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    background: var(--surface);
+}
+
+/* Progress indicators */
+#examsPage progress,
+#examsPage .progress-track {
+    overflow: hidden;
+    border-radius: 999px;
+}
+
+/* Dark mode */
+body.dark #examsPage .exam-setup,
+body.dark #examsPage #examSetup,
+body.dark #examsPage .question-card,
+body.dark #examsPage .exam-question,
+body.dark #examsPage .exam-results,
+body.dark #examsPage #examResults {
+    box-shadow: none;
+}
+
+/* Tablet */
+@media (max-width: 850px) {
+    #examsPage .exam-setup,
+    #examsPage #examSetup {
+        border-radius: 18px;
+    }
+
+    #examsPage .question-card,
+    #examsPage .exam-question {
+        padding: 18px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    #examsPage h1 {
+        font-size: clamp(30px, 8vw, 40px);
+    }
+
+    #examsPage .exam-setup,
+    #examsPage #examSetup {
+        padding: 18px;
+    }
+
+    #examsPage .question-card,
+    #examsPage .exam-question {
+        padding: 16px;
+        border-radius: 15px;
+    }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    #examsPage button,
+    #examsPage .question-type-card,
+    #examsPage .question-type-option,
+    #examsPage .exam-mode-card,
+    #examsPage .mode-option {
+        transition: none;
+    }
+}
+
+/* Fix the Exams page subject dropdown */
+#examsPage select {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    min-height: 54px;
+    height: auto;
+    padding: 14px 44px 14px 16px;
+    line-height: 1.5;
+    font-size: 16px;
+    font-family: inherit;
+    box-sizing: border-box;
+    border: 1px solid var(--border, #e2e5ef);
+    border-radius: 14px;
+    background-color: var(--surface, #ffffff);
+    color: var(--text, #191a2e);
+    overflow: visible;
+}
+
+/* Keep dropdown text vertically aligned */
+#examsPage select option {
+    padding: 10px;
+    font-size: 16px;
+}
+
+/* Make the subject field respond clearly to focus */
+#examsPage select:focus {
+    outline: none;
+    border-color: var(--primary, #635bff);
+    box-shadow: 0 0 0 3px rgba(99, 91, 255, 0.12);
+}
+
+/* Mobile sizing */
+@media (max-width: 600px) {
+    #examsPage select {
+        min-height: 50px;
+        padding: 12px 38px 12px 14px;
+        font-size: 15px;
+    }
+}
+
+/* ==========================================
+   STUDYFLOW — DASHBOARD DARK MODE FIX
+   Visual only: no JavaScript changes
+========================================== */
+
+/* Make all dashboard panels use the same dark surface */
+body.dark #dashboardPage .dashboard-panel {
+    background: #151725;
+    border: 1px solid #292d42;
+    color: #f4f5ff;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12);
+}
+
+/* Keep panel headings consistent */
+body.dark #dashboardPage .dashboard-panel h2,
+body.dark #dashboardPage .dashboard-panel h3 {
+    color: #f4f5ff;
+}
+
+body.dark #dashboardPage .dashboard-panel p,
+body.dark #dashboardPage .dashboard-panel small {
+    color: #a6adc8;
+}
+
+/* Saved notes: give every note its own card */
+#savedNotesList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+#savedNotesList .saved-note-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 14px;
+    padding: 16px;
+    border: 1px solid #e4e7f0;
+    border-radius: 14px;
+    background: #ffffff;
+    transition: border-color 0.2s ease,
+                transform 0.2s ease;
+}
+
+#savedNotesList .saved-note-item:hover {
+    border-color: #635bff;
+    transform: translateY(-1px);
+}
+
+#savedNotesList .saved-note-info {
+    min-width: 0;
+}
+
+#savedNotesList .saved-note-info h3 {
+    margin: 0 0 6px;
+    overflow-wrap: anywhere;
+}
+
+#savedNotesList .saved-note-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+/* Dark mode saved-note cards */
+body.dark #savedNotesList .saved-note-item {
+    background: #1b2032;
+    border-color: #303650;
+}
+
+body.dark #savedNotesList .saved-note-item:hover {
+    border-color: #756dff;
+}
+
+body.dark #savedNotesList .saved-note-info h3 {
+    color: #f4f5ff;
+}
+
+/* Open button */
+#savedNotesList .open-saved-note {
+    padding: 9px 16px;
+    border: 1px solid #635bff;
+    border-radius: 10px;
+    background: #635bff;
+    color: #ffffff;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+#savedNotesList .open-saved-note:hover {
+    background: #5148e5;
+    border-color: #5148e5;
+}
+
+/* Delete button */
+#savedNotesList .delete-saved-note {
+    padding: 9px 16px;
+    border: 1px solid #f0b8c0;
+    border-radius: 10px;
+    background: #fff1f2;
+    color: #b42336;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+#savedNotesList .delete-saved-note:hover {
+    background: #ffe0e4;
+}
+
+/* Dark mode delete button */
+body.dark #savedNotesList .delete-saved-note {
+    background: #35202b;
+    border-color: #673344;
+    color: #ffb7c2;
+}
+
+body.dark #savedNotesList .delete-saved-note:hover {
+    background: #482432;
+}
+
+/* Keep empty-state panels consistent */
+body.dark #dashboardPage .empty-state {
+    background: #101320;
+    border-color: #2b3046;
+    border-radius: 16px;
+}
+
+/* Keyboard accessibility */
+#savedNotesList button:focus-visible {
+    outline: 3px solid rgba(117, 109, 255, 0.55);
+    outline-offset: 3px;
+}
+
+/* Mobile layout */
+@media (max-width: 600px) {
+    #savedNotesList .saved-note-item {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    #savedNotesList .saved-note-actions {
+        width: 100%;
+    }
+
+    #savedNotesList .saved-note-actions button {
+        flex: 1;
+    }
+}
+
+/* ==========================================
+   STUDYFLOW AI — GLOBAL UI CONSISTENCY
+   Shared colors, cards, buttons and inputs
+========================================== */
+
+:root {
+    --sf-primary: #635bff;
+    --sf-primary-hover: #5148e5;
+    --sf-radius-sm: 10px;
+    --sf-radius-md: 14px;
+    --sf-radius-lg: 18px;
+    --sf-border-light: #e5e7f0;
+    --sf-shadow-card: 0 5px 20px rgba(25, 30, 65, 0.035);
+}
+
+/* Shared page typography */
+#homePage,
+#dashboardPage,
+#studyPage,
+#examsPage,
+#socialPage,
+#savedNotePage {
+    --primary: var(--sf-primary);
+    --primary-dark: var(--sf-primary-hover);
+}
+
+/* Consistent card borders and corners */
+#homePage .action-card,
+#homePage .stat-card,
+#homePage .recent-item,
+#dashboardPage .stat-card,
+#dashboardPage .dashboard-card,
+#studyPage .explain-card,
+#studyPage .input-panel,
+#studyPage .response-panel,
+#studyPage .explanation-panel,
+#examsPage .exam-setup,
+#examsPage #examSetup {
+    border-radius: var(--sf-radius-lg);
+    border-color: var(--border, var(--sf-border-light));
+}
+
+/* Consistent button interaction */
+#homePage button,
+#dashboardPage button,
+#studyPage button,
+#examsPage button,
+#socialPage button,
+#savedNotePage button {
+    transition:
+        background-color 0.18s ease,
+        border-color 0.18s ease,
+        box-shadow 0.18s ease,
+        transform 0.18s ease;
+}
+
+#homePage button:focus-visible,
+#dashboardPage button:focus-visible,
+#studyPage button:focus-visible,
+#examsPage button:focus-visible,
+#socialPage button:focus-visible,
+#savedNotePage button:focus-visible {
+    outline: 3px solid rgba(99, 91, 255, 0.35);
+    outline-offset: 3px;
+}
+
+#homePage button:disabled,
+#dashboardPage button:disabled,
+#studyPage button:disabled,
+#examsPage button:disabled,
+#socialPage button:disabled,
+#savedNotePage button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Consistent form focus */
+#homePage input:focus-visible,
+#homePage select:focus-visible,
+#homePage textarea:focus-visible,
+#dashboardPage input:focus-visible,
+#dashboardPage select:focus-visible,
+#dashboardPage textarea:focus-visible,
+#studyPage input:focus-visible,
+#studyPage select:focus-visible,
+#studyPage textarea:focus-visible,
+#examsPage input:focus-visible,
+#examsPage select:focus-visible,
+#examsPage textarea:focus-visible,
+#socialPage input:focus-visible,
+#socialPage textarea:focus-visible {
+    outline: 2px solid rgba(99, 91, 255, 0.65);
+    outline-offset: 2px;
+}
+
+/* Unified dark-mode surfaces */
+body.dark {
+    --sf-border-light: #30344a;
+}
+
+body.dark #homePage .action-card,
+body.dark #homePage .stat-card,
+body.dark #homePage .recent-item,
+body.dark #dashboardPage .stat-card,
+body.dark #dashboardPage .dashboard-card,
+body.dark #studyPage .explain-card,
+body.dark #studyPage .input-panel,
+body.dark #studyPage .response-panel,
+body.dark #studyPage .explanation-panel,
+body.dark #examsPage .exam-setup,
+body.dark #examsPage #examSetup {
+    border-color: var(--border, #30344a);
+    box-shadow: none;
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    #homePage *,
+    #dashboardPage *,
+    #studyPage *,
+    #examsPage *,
+    #socialPage *,
+    #savedNotePage * {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+}
+
+/* ==========================================
+   STUDYFLOW AI — MOBILE RESPONSIVENESS
+   CSS only: preserve existing functionality
+========================================== */
+
+/* Prevent accidental horizontal overflow */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: clip;
+}
+
+img,
+video,
+iframe,
+canvas,
+svg {
+    max-width: 100%;
+}
+
+input,
+select,
+textarea,
+button {
+    font: inherit;
+    max-width: 100%;
+}
+
+button,
+a,
+input,
+select,
+textarea {
+    touch-action: manipulation;
+}
+
+button,
+input,
+select,
+textarea {
+    min-height: 42px;
+}
+
+/* Keep page sections inside the viewport */
+main,
+.page,
+#homePage,
+#studyPage,
+#examsPage,
+#dashboardPage,
+#socialPage,
+#savedNotePage {
+    min-width: 0;
+    max-width: 100%;
+}
+
+.page,
+#homePage,
+#studyPage,
+#examsPage,
+#dashboardPage,
+#socialPage,
+#savedNotePage {
+    overflow-wrap: anywhere;
+}
+
+/* Tablet and smaller laptops */
+@media (max-width: 900px) {
+    .dashboard-grid,
+    .dashboard-stats,
+    .stats-grid,
+    .action-grid,
+    .action-cards,
+    .features-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .dashboard-panel,
+    .dashboard-card,
+    .action-card,
+    .stat-card {
+        min-width: 0;
+    }
+
+    .page {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}
+
+/* Phones */
+@media (max-width: 600px) {
+    body {
+        font-size: 15px;
+    }
+
+    /* Page spacing */
+    main,
+    .page {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+
+    .page h1,
+    .tool-header h1 {
+        font-size: clamp(1.55rem, 7vw, 2rem);
+        line-height: 1.2;
+        overflow-wrap: anywhere;
+    }
+
+    .page h2 {
+        font-size: clamp(1.15rem, 5vw, 1.45rem);
+        line-height: 1.3;
+    }
+
+    /* Stack common layouts */
+    .dashboard-grid,
+    .dashboard-stats,
+    .stats-grid,
+    .action-grid,
+    .action-cards,
+    .features-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .dashboard-panel,
+    .dashboard-card,
+    .action-card,
+    .stat-card,
+    .saved-note-view {
+        width: 100%;
+        min-width: 0;
+    }
+
+    /* Forms should fit phone screens */
+    input,
+    select,
+    textarea {
+        width: 100%;
+        min-width: 0;
+    }
+
+    textarea {
+        resize: vertical;
+    }
+
+    /* Buttons remain easy to tap */
+    button {
+        min-height: 44px;
+    }
+
+    .action-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .action-buttons button {
+        width: 100%;
+    }
+
+    /* Keep AI explanations readable */
+    .saved-note-content,
+    .response-panel,
+    .explanation-panel,
+    .explain-card {
+        min-width: 0;
+        overflow-wrap: anywhere;
+        word-break: normal;
+    }
+
+    /* Exam questions and answers */
+    #examSetup,
+    .exam-setup,
+    #examContainer,
+    #examResults {
+        width: 100%;
+        min-width: 0;
+    }
+
+    #examContainer img,
+    #examResults img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* Popups fit the viewport */
+    .mistake-popup,
+    .modal {
+        padding: 12px;
+    }
+
+    .mistake-popup-content,
+    .modal-content {
+        width: 100%;
+        max-width: 100%;
+        max-height: 85dvh;
+        overflow-y: auto;
+    }
+}
+
+/* Extra-small phones */
+@media (max-width: 380px) {
+    main,
+    .page {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .page h1,
+    .tool-header h1 {
+        font-size: 1.45rem;
+    }
+
+    .dashboard-panel,
+    .dashboard-card,
+    .action-card,
+    .stat-card {
+        padding: 14px;
+    }
+}
+
+/* Honor reduced-motion settings */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

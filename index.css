@@ -9299,3 +9299,93 @@ main,
         transition-duration: 0.01ms !important;
     }
 }
+
+/* ==========================================
+   STUDYFLOW AI — DESKTOP LAYOUT REFINEMENT
+   Mobile styles remain unchanged
+========================================== */
+
+@media (min-width: 1000px) {
+
+    /* Narrow and center the main content */
+    main {
+        max-width: 1160px;
+        padding: 44px 32px;
+    }
+
+    /* Align the navbar content with the page */
+    .navbar {
+        padding-left: max(32px, calc((100vw - 1160px) / 2));
+        padding-right: max(32px, calc((100vw - 1160px) / 2));
+    }
+
+    /* Make the homepage less oversized */
+    .hero {
+        margin-bottom: 56px;
+    }
+
+    .hero h1 {
+        font-size: clamp(44px, 4.5vw, 60px);
+        letter-spacing: -2px;
+    }
+
+    .hero-text {
+        max-width: 680px;
+        margin-bottom: 28px;
+    }
+
+    /* Keep content panels from stretching */
+    .tool-layout,
+    .focus-layout {
+        grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+        gap: 22px;
+    }
+
+    /* Give the Explain heading more balanced proportions */
+    .tool-header {
+        max-width: 650px;
+        margin-bottom: 32px;
+    }
+
+    .tool-header h1 {
+        font-size: 40px;
+    }
+
+    /* Balanced card spacing */
+    .action-grid,
+    .stats-grid,
+    .dashboard-stats,
+    .dashboard-grid {
+        gap: 16px;
+    }
+
+    .action-card,
+    .stat-card,
+    .dashboard-card,
+    .dashboard-panel,
+    .tool-panel {
+        min-width: 0;
+    }
+
+    /* Keep Exams centered */
+    #examsPage {
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+
+    .exam-screen {
+        width: 100%;
+        max-width: 1000px;
+        margin-inline: auto;
+    }
+
+    /* Avoid long content pushing panels wider */
+    .ai-box,
+    .tool-panel,
+    .dashboard-panel,
+    .dashboard-card,
+    .action-card,
+    .recent-item {
+        overflow-wrap: anywhere;
+    }
+}

@@ -2215,6 +2215,8 @@ function closeAllAuthModals() {
 }
 
 
+
+
 /* =========================================================
    MODAL CLOSE BUTTONS
 ========================================================= */
@@ -2861,6 +2863,16 @@ async function updateAuthUI(
 
     const loggedIn =
         Boolean(user);
+
+            // Show the welcome screen only when signed out.
+    if (welcomeGate) {
+        welcomeGate.classList.toggle("hidden", loggedIn);
+    }
+
+    // Close any leftover login forms when authenticated.
+    if (loggedIn) {
+        closeAllAuthModals();
+    }
 
 
     /*
@@ -4546,6 +4558,7 @@ async function sendFriendRequest(
    LOAD FRIEND REQUESTS
 ========================================================= */
 
+
 async function loadFriendRequests() {
 
     if (
@@ -4553,62 +4566,87 @@ async function loadFriendRequests() {
         !communityUser ||
         !friendRequestsList
     ) {
-
         return;
-
     }
-
 
     try {
 
+        // 1. Fetch incoming pending requests
         const {
-            data,
-            error
-        } =
-            await supabaseClient
-                .from(
-                    "friend_requests"
-                )
-                .select(`
-                    id,
-                    sender_id,
-                    receiver_id,
-                    status,
-                    created_at,
-                    profiles:sender_id (
-                        username,
-                        display_name,
-                        avatar_url
-                    )
-                `)
-                .eq(
-                    "receiver_id",
-                    communityUser.id
-                )
-                .eq(
-                    "status",
-                    "pending"
-                )
-                .order(
-                    "created_at",
-                    {
-                        ascending: false
-                    }
-                );
+            data: requests,
+            error: requestError
+        } = await supabaseClient
+            .from("friend_requests")
+            .select(`
+                id,
+                sender_id,
+                receiver_id,
+                status,
+                created_at
+            `)
+            .eq("receiver_id", communityUser.id)
+            .eq("status", "pending")
+            .order("created_at", {
+                ascending: false
+            });
 
-
-        if (
-            error
-        ) {
-
-            throw error;
-
+        if (requestError) {
+            throw requestError;
         }
 
+        const pendingRequests = requests || [];
 
-        renderFriendRequests(
-            data || []
-        );
+        // 2. Get sender IDs
+        const senderIds = [
+            ...new Set(
+                pendingRequests.map(
+                    request => request.sender_id
+                )
+            )
+        ];
+
+        // 3. Fetch sender profiles separately
+        let profiles = [];
+
+        if (senderIds.length > 0) {
+
+            const {
+                data,
+                error: profileError
+            } = await supabaseClient
+                .from("profiles")
+                .select(`
+                    id,
+                    username,
+                    display_name,
+                    avatar_url
+                `)
+                .in("id", senderIds);
+
+            if (profileError) {
+                throw profileError;
+            }
+
+            profiles = data || [];
+        }
+
+        // 4. Attach profiles to requests
+        const formattedRequests =
+            pendingRequests.map(request => {
+
+                const profile = profiles.find(
+                    item => item.id === request.sender_id
+                );
+
+                return {
+                    ...request,
+                    profiles: profile || null
+                };
+
+            });
+
+        // 5. Display incoming requests
+        renderFriendRequests(formattedRequests);
 
     }
 
@@ -4618,7 +4656,6 @@ async function loadFriendRequests() {
             "Friend requests error:",
             error
         );
-
 
         friendRequestsList.innerHTML = `
             <div class="chat-empty">
@@ -4630,201 +4667,6 @@ async function loadFriendRequests() {
 
 }
 
-
-/* =========================================================
-   RENDER FRIEND REQUESTS
-========================================================= */
-
-function renderFriendRequests(
-    requests
-) {
-
-    if (
-        !friendRequestsList
-    ) {
-
-        return;
-
-    }
-
-
-    friendRequestsList.innerHTML =
-        "";
-
-
-    if (
-        requestCount
-    ) {
-
-        requestCount.textContent =
-            String(
-                requests.length
-            );
-
-    }
-
-
-    if (
-        !requests.length
-    ) {
-
-        friendRequestsList.innerHTML = `
-            <div class="chat-empty">
-                No pending requests.
-            </div>
-        `;
-
-        return;
-
-    }
-
-
-    requests.forEach(
-        request => {
-
-            const item =
-                document.createElement(
-                    "div"
-                );
-
-            item.className =
-                "friend-item";
-
-
-            const info =
-                document.createElement(
-                    "div"
-                );
-
-            info.className =
-                "friend-info";
-
-
-            const name =
-                document.createElement(
-                    "strong"
-                );
-
-            name.textContent =
-                request.profiles
-                    ?.display_name ||
-                request.profiles
-                    ?.username ||
-                "Student";
-
-
-            const username =
-                document.createElement(
-                    "span"
-                );
-
-            username.textContent =
-                request.profiles
-                    ?.username
-                    ? `@${request.profiles.username}`
-                    : "";
-
-
-            info.appendChild(
-                name
-            );
-
-            info.appendChild(
-                username
-            );
-
-
-            const actions =
-                document.createElement(
-                    "div"
-                );
-
-            actions.className =
-                "friend-actions";
-
-
-            const acceptButton =
-                document.createElement(
-                    "button"
-                );
-
-            acceptButton.type =
-                "button";
-
-            acceptButton.className =
-                "friend-request-btn";
-
-            acceptButton.textContent =
-                "Accept";
-
-
-            acceptButton.addEventListener(
-                "click",
-                () => {
-
-                    respondToFriendRequest(
-                        request.id,
-                        "accepted"
-                    );
-
-                }
-            );
-
-
-            const rejectButton =
-                document.createElement(
-                    "button"
-                );
-
-            rejectButton.type =
-                "button";
-
-            rejectButton.className =
-                "friend-request-btn";
-
-            rejectButton.textContent =
-                "Decline";
-
-
-            rejectButton.addEventListener(
-                "click",
-                () => {
-
-                    respondToFriendRequest(
-                        request.id,
-                        "rejected"
-                    );
-
-                }
-            );
-
-
-            actions.appendChild(
-                acceptButton
-            );
-
-            actions.appendChild(
-                rejectButton
-            );
-
-
-            item.appendChild(
-                info
-            );
-
-            item.appendChild(
-                actions
-            );
-
-
-            friendRequestsList.appendChild(
-                item
-            );
-
-        }
-    );
-
-}
 
 
 /* =========================================================
@@ -9568,3 +9410,4 @@ if (typingHeading) {
     // Change phrase every 3 seconds
     setInterval(changeHeroPhrase, 3000);
 }
+

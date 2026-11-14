@@ -101,6 +101,15 @@
         📊 Dashboard
     </button>
 
+    <button
+        class="nav-link hidden"
+        id="adminNavLink"
+        data-page="admin"
+        type="button"
+        aria-label="Admin Dashboard">
+        🛡️ Admin
+    </button>
+
 </nav>
     <div class="nav-actions">
 
@@ -399,7 +408,7 @@
                 <div>
 
                     <span>
-                        Quiz accuracy
+                        Objective accuracy
                     </span>
 
                     <strong id="accuracyStat">
@@ -1841,7 +1850,7 @@
             <div>
 
                 <span>
-                    Quiz Accuracy
+                    Objective Accuracy
                 </span>
 
                 <strong id="dashboardAccuracy">
@@ -1887,6 +1896,26 @@
                 </span>
 
                 <strong id="dashboardWeakTopics">
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+        <div class="dashboard-card">
+
+            <div class="dashboard-icon">
+                📝
+            </div>
+
+            <div>
+
+                <span>
+                    Exams Completed
+                </span>
+
+                <strong id="dashboardExams">
                     0
                 </strong>
 
@@ -2048,6 +2077,46 @@
     </div>
 
 
+    <!-- REAL QUIZ HISTORY + SUBJECT PERFORMANCE -->
+    <div class="dashboard-grid dashboard-insights-grid">
+
+        <div class="dashboard-panel">
+            <div class="panel-header">
+                <div>
+                    <span class="small-label">YOUR RESULTS</span>
+                    <h2>Quiz &amp; Exam History</h2>
+                </div>
+                <span>📈</span>
+            </div>
+            <div id="dashboardHistory">
+                <div class="empty-state">
+                    <div>📝</div>
+                    <p>No completed exams yet.</p>
+                    <small>Your submitted quiz results will appear here.</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-panel">
+            <div class="panel-header">
+                <div>
+                    <span class="small-label">PERFORMANCE</span>
+                    <h2>Subject Performance</h2>
+                </div>
+                <span>🎓</span>
+            </div>
+            <div id="dashboardSubjectPerformance">
+                <div class="empty-state">
+                    <div>📊</div>
+                    <p>No subject data yet.</p>
+                    <small>Complete an exam to see your subject performance.</small>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
     <!-- QUICK ACTIONS -->
 
     <div class="dashboard-panel quick-actions">
@@ -2144,6 +2213,102 @@
         type="button">
         ← Back to Dashboard
     </button>
+
+</section>
+
+
+<!-- =====================================================
+     ADMIN DASHBOARD
+===================================================== -->
+
+<section
+    class="page admin-page"
+    id="adminPage">
+
+    <div class="admin-page-header">
+        <div>
+            <span class="small-label">✦ STUDYFLOW MANAGEMENT</span>
+            <h1>Admin Dashboard</h1>
+            <p>Manage student accounts and keep the Studyflow community safe.</p>
+        </div>
+
+        <button
+            class="secondary-btn admin-refresh-btn"
+            id="adminRefreshBtn"
+            type="button">
+            ↻ Refresh
+        </button>
+    </div>
+
+    <div class="admin-stats-grid">
+        <article class="admin-stat-card">
+            <span class="admin-stat-icon">👥</span>
+            <div>
+                <span>Total users</span>
+                <strong id="adminTotalUsers">—</strong>
+            </div>
+        </article>
+
+        <article class="admin-stat-card">
+            <span class="admin-stat-icon">🚫</span>
+            <div>
+                <span>Banned users</span>
+                <strong id="adminBannedUsers">—</strong>
+            </div>
+        </article>
+
+        <article class="admin-stat-card">
+            <span class="admin-stat-icon">🛡️</span>
+            <div>
+                <span>Administrators</span>
+                <strong id="adminAdminUsers">—</strong>
+            </div>
+        </article>
+    </div>
+
+    <div class="admin-management-panel">
+        <div class="admin-panel-heading">
+            <div>
+                <span class="small-label">ACCOUNT CONTROL</span>
+                <h2>User Management</h2>
+                <p>Search accounts and manage community access.</p>
+            </div>
+        </div>
+
+        <div class="admin-search-row">
+            <input
+                id="adminSearchInput"
+                type="search"
+                placeholder="Search by name, username or user ID"
+                autocomplete="off">
+
+            <span class="admin-security-note">
+                🔒 Actions are verified by Supabase.
+            </span>
+        </div>
+
+        <p
+            class="admin-status"
+            id="adminStatus"
+            aria-live="polite">
+            User information will appear here.
+        </p>
+
+        <div
+            class="admin-users-list"
+            id="adminUsersList">
+            <div class="admin-empty-state">
+                <div>🛡️</div>
+                <strong>Admin tools are ready</strong>
+                <p>Open this page to load registered accounts.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="admin-notice">
+        <strong>Administrator safety</strong>
+        <p>Your own account and other administrator accounts are protected from ban actions in this dashboard.</p>
+    </div>
 
 </section>
 

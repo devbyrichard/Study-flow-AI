@@ -173,6 +173,11 @@ const pages = {
     savedNote:
         document.getElementById(
             "savedNotePage"
+        ),
+
+    admin:
+        document.getElementById(
+            "adminPage"
         )
 
 };
@@ -181,6 +186,11 @@ const pages = {
 const navLinks =
     document.querySelectorAll(
         ".nav-link"
+    );
+
+const adminNavLink =
+    document.getElementById(
+        "adminNavLink"
     );
 
 
@@ -204,6 +214,9 @@ let currentPage = "home";
 
 let pageHistory = [];
 
+let currentUserRole = "user";
+let adminUsersCache = [];
+
 
 /* =========================================================
    COMMUNITY STATE
@@ -220,6 +233,7 @@ let communityFriendChannel = null;
    PROGRESS STATE
 ========================================================= */
 
+let progressStorageKey = "studyflowProgress";
 let progress;
 
 try {
@@ -300,6 +314,91 @@ if (
 
 }
 
+if (!Array.isArray(progress.recentActivity)) {
+    progress.recentActivity = [];
+}
+
+if (!Array.isArray(progress.quizHistory)) {
+    progress.quizHistory = [];
+}
+
+/* Keep each signed-in student's progress separate on this device. */
+function normalizeProgressData(data = {}) {
+    const safe = data && typeof data === "object" ? data : {};
+    safe.topics = Array.isArray(safe.topics) ? safe.topics : [];
+    safe.studyDays = Array.isArray(safe.studyDays) ? safe.studyDays : [];
+    safe.quizCorrect = Number(safe.quizCorrect) || 0;
+    safe.quizTotal = Number(safe.quizTotal) || 0;
+    safe.streak = Number(safe.streak) || 0;
+    safe.weakTopics = safe.weakTopics && typeof safe.weakTopics === "object" ? safe.weakTopics : {};
+    safe.recentActivity = Array.isArray(safe.recentActivity) ? safe.recentActivity : [];
+    safe.quizHistory = Array.isArray(safe.quizHistory) ? safe.quizHistory : [];
+    return safe;
+}
+
+function switchProgressAccount(userId = null) {
+    progressStorageKey = userId
+        ? `studyflowProgress:${userId}`
+        : "studyflowProgress";
+
+    try {
+        progress = normalizeProgressData(
+            JSON.parse(localStorage.getItem(progressStorageKey) || "{}")
+        );
+    } catch (error) {
+        console.warn("Could not read saved study progress:", error);
+        progress = normalizeProgressData({});
+    }
+
+    if (typeof updateDashboard === "function") updateDashboard();
+    if (typeof updateStats === "function") updateStats();
+}
+
+function getLocalDateKey(date = new Date()) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+}
+
+function recordStudyActivity(activity) {
+    if (!activity || !activity.title) return;
+
+    if (!Array.isArray(progress.recentActivity)) progress.recentActivity = [];
+    progress.recentActivity.unshift({
+        type: activity.type || "study",
+        title: String(activity.title).slice(0, 120),
+        detail: String(activity.detail || "").slice(0, 140),
+        date: new Date().toISOString()
+    });
+    progress.recentActivity = progress.recentActivity.slice(0, 12);
+
+    const today = getLocalDateKey();
+    if (!Array.isArray(progress.studyDays)) progress.studyDays = [];
+    if (!progress.studyDays.includes(today)) progress.studyDays.push(today);
+}
+
+function calculateStudyStreak() {
+    const days = new Set((progress.studyDays || []).filter(Boolean));
+    let cursor = new Date();
+    let key = getLocalDateKey(cursor);
+
+    // A streak remains active if the student last studied yesterday.
+    if (!days.has(key)) {
+        cursor.setDate(cursor.getDate() - 1);
+        key = getLocalDateKey(cursor);
+        if (!days.has(key)) return 0;
+    }
+
+    let streak = 0;
+    while (days.has(key)) {
+        streak++;
+        cursor.setDate(cursor.getDate() - 1);
+        key = getLocalDateKey(cursor);
+    }
+    return streak;
+}
+
 
 /* =========================================================
    NAVIGATION
@@ -323,6 +422,14 @@ function showPage(
 
     }
 
+
+    if (
+        pageName === "admin" &&
+        currentUserRole !== "admin"
+    ) {
+        showToast("You do not have permission to access the Admin Dashboard.");
+        return;
+    }
 
     if (
         addToHistory &&
@@ -386,6 +493,10 @@ function showPage(
         pageName;
 
 
+    if (pageName === "home") {
+        updateStats();
+    }
+
     if (
         pageName ===
         "dashboard"
@@ -435,6 +546,10 @@ function showPage(
 
         }
 
+    }
+
+    if (pageName === "admin") {
+        loadAdminDashboard();
     }
 
 
@@ -857,24 +972,14 @@ function showLoading(
 ========================================================= */
 
 function saveProgress() {
-
-    localStorage.setItem(
-        "studyflowProgress",
-        JSON.stringify(
-            progress
-        )
-    );
-
-
-    if (
-        typeof updateStats ===
-        "function"
-    ) {
-
-        updateStats();
-
+    try {
+        localStorage.setItem(progressStorageKey, JSON.stringify(progress));
+    } catch (error) {
+        console.error("Could not save Studyflow progress:", error);
     }
 
+    if (typeof updateStats === "function") updateStats();
+    if (typeof updateDashboard === "function") updateDashboard();
 }
 
 
@@ -882,50 +987,172 @@ function saveProgress() {
    ADD TOPIC TO PROGRESS
 ========================================================= */
 
-function addTopic(
-    topic
-) {
+function addTopic(topic) {
+    const cleanTopic = String(topic || "").trim();
+    if (!cleanTopic) return;
 
-    const cleanTopic =
-        String(
-            topic || ""
-        ).trim();
+    if (!Array.isArray(progress.topics)) progress.topics = [];
+    const alreadyExists = progress.topics.some(
+        item => String(item).toLowerCase() === cleanTopic.toLowerCase()
+    );
+    if (!alreadyExists) progress.topics.push(cleanTopic);
 
-    if (!cleanTopic) {
+    recordStudyActivity({
+        type: "study",
+        title: cleanTopic,
+        detail: "AI explanation completed"
+    });
+
+    progress.streak = calculateStudyStreak();
+    saveProgress();
+}
+
+
+/* =========================================================
+   LIVE STUDENT DASHBOARD + HOME STATS
+========================================================= */
+
+function getWeakTopicEntries() {
+    return Object.entries(progress.weakTopics || {})
+        .map(([key, value]) => {
+            if (value && typeof value === "object") return { key, ...value };
+            return { key, subject: "", topic: key, incorrect: Number(value) || 0, attempted: 0 };
+        })
+        .filter(item => Number(item.incorrect) > 0)
+        .sort((a, b) => Number(b.incorrect) - Number(a.incorrect));
+}
+
+function renderEmptyState(icon, title, description) {
+    return `<div class="empty-state"><div>${icon}</div><p>${escapeHTML(title)}</p><small>${escapeHTML(description)}</small></div>`;
+}
+
+function updateStats() {
+    const topicsStat = document.getElementById("topicsStat");
+    const accuracyStat = document.getElementById("accuracyStat");
+    const streakStat = document.getElementById("streakStat");
+    const recentList = document.getElementById("recentList");
+
+    const topics = Array.isArray(progress.topics) ? progress.topics : [];
+    const accuracy = progress.quizTotal > 0
+        ? Math.round((progress.quizCorrect / progress.quizTotal) * 100)
+        : 0;
+
+    if (topicsStat) topicsStat.textContent = String(topics.length);
+    if (accuracyStat) accuracyStat.textContent = `${accuracy}%`;
+    if (streakStat) streakStat.textContent = `${calculateStudyStreak()} days`;
+
+    if (recentList) {
+        const activities = (progress.recentActivity || []).slice(0, 4);
+        if (!activities.length) {
+            recentList.innerHTML = renderEmptyState("📖", "No learning activity yet.", "Ask Studyflow to explain a topic or complete a practice exam to start tracking your progress.");
+        } else {
+            recentList.innerHTML = activities.map(item => `
+                <div class="recent-item">
+                    <div class="recent-item-icon">${item.type === "quiz" ? "📝" : "📚"}</div>
+                    <div class="recent-item-info"><strong>${escapeHTML(item.title)}</strong><small>${escapeHTML(item.detail || "Study activity")} · ${new Date(item.date).toLocaleDateString()}</small></div>
+                </div>
+            `).join("");
+        }
+    }
+}
+
+function displayWeakTopics() {
+    const list = document.getElementById("weakTopicsList");
+    if (!list) return;
+
+    const weakTopics = getWeakTopicEntries();
+    if (!weakTopics.length) {
+        list.innerHTML = renderEmptyState("🎯", "No weak topics detected yet", "Complete an exam with objective questions. Topics you miss will appear here.");
         return;
     }
 
-    if (!Array.isArray(progress.topics)) {
-        progress.topics = [];
-    }
-
-    const alreadyExists =
-        progress.topics.some(
-            item =>
-                String(item).toLowerCase() ===
-                cleanTopic.toLowerCase()
-        );
-
-    if (!alreadyExists) {
-        progress.topics.push(cleanTopic);
-    }
-
-    const today =
-        new Date()
-            .toISOString()
-            .split("T")[0];
-
-    if (!Array.isArray(progress.studyDays)) {
-        progress.studyDays = [];
-    }
-
-    if (!progress.studyDays.includes(today)) {
-        progress.studyDays.push(today);
-    }
-
-    saveProgress();
-
+    list.innerHTML = weakTopics.slice(0, 8).map(item => {
+        const label = item.subject ? `${item.subject}: ${item.topic}` : item.topic;
+        return `<div class="dashboard-weak-item"><div><strong>${escapeHTML(label)}</strong><small>${Number(item.incorrect)} incorrect answer${Number(item.incorrect) === 1 ? "" : "s"}</small></div><button type="button" class="dashboard-revise-btn" data-revise-topic="${escapeHTML(item.topic || item.key)}">Revise</button></div>`;
+    }).join("");
 }
+
+function updateDashboard() {
+    const topicsEl = document.getElementById("dashboardTopics");
+    const accuracyEl = document.getElementById("dashboardAccuracy");
+    const streakEl = document.getElementById("dashboardStreak");
+    const weakCountEl = document.getElementById("dashboardWeakTopics");
+    const recentEl = document.getElementById("dashboardRecent");
+    const weakListEl = document.getElementById("dashboardWeakList");
+    const historyEl = document.getElementById("dashboardHistory");
+    const subjectsEl = document.getElementById("dashboardSubjectPerformance");
+    const examsEl = document.getElementById("dashboardExams");
+
+    const topics = Array.isArray(progress.topics) ? progress.topics : [];
+    const history = Array.isArray(progress.quizHistory) ? progress.quizHistory : [];
+    const weakTopics = getWeakTopicEntries();
+    const accuracy = progress.quizTotal > 0
+        ? Math.round((progress.quizCorrect / progress.quizTotal) * 100)
+        : 0;
+
+    if (topicsEl) topicsEl.textContent = String(topics.length);
+    if (accuracyEl) accuracyEl.textContent = `${accuracy}%`;
+    if (streakEl) streakEl.textContent = `${calculateStudyStreak()} days`;
+    if (weakCountEl) weakCountEl.textContent = String(weakTopics.length);
+    if (examsEl) examsEl.textContent = String(history.length);
+
+    if (recentEl) {
+        const activities = (progress.recentActivity || []).slice(0, 6);
+        recentEl.innerHTML = activities.length ? activities.map(item => `
+            <div class="dashboard-activity-item">
+                <span class="dashboard-activity-icon">${item.type === "quiz" ? "📝" : "📚"}</span>
+                <div><strong>${escapeHTML(item.title)}</strong><small>${escapeHTML(item.detail || "Study activity")} · ${new Date(item.date).toLocaleDateString()}</small></div>
+            </div>
+        `).join("") : renderEmptyState("📖", "Nothing here yet", "Your AI explanations and completed quizzes will appear here.");
+    }
+
+    if (weakListEl) {
+        weakListEl.innerHTML = weakTopics.length ? weakTopics.slice(0, 6).map(item => {
+            const label = item.subject ? `${item.subject}: ${item.topic}` : item.topic;
+            const attempted = Number(item.attempted) || 0;
+            const rate = attempted > 0 ? Math.round((Number(item.incorrect) / attempted) * 100) : null;
+            return `<div class="dashboard-weak-item"><div><strong>${escapeHTML(label)}</strong><small>${Number(item.incorrect)} incorrect answer${Number(item.incorrect) === 1 ? "" : "s"}${rate === null ? "" : ` · ${rate}% incorrect`}</small></div><button type="button" class="dashboard-revise-btn" data-revise-topic="${escapeHTML(item.topic || item.key)}">Revise</button></div>`;
+        }).join("") : renderEmptyState("🎯", "No weak topics detected yet", "Complete an exam with objective questions. Topics you miss will be listed here for revision.");
+    }
+
+    if (historyEl) {
+        historyEl.innerHTML = history.length ? history.slice(0, 8).map(item => `
+            <div class="dashboard-history-item">
+                <div><strong>${escapeHTML(item.subject)} · ${escapeHTML(item.topic)}</strong><small>${escapeHTML(item.examType)} · ${escapeHTML(item.mode)} · ${new Date(item.date).toLocaleDateString()}</small></div>
+                <div class="dashboard-history-score"><strong>${Number(item.percentage) || 0}%</strong><small>${Number(item.earnedMarks) || 0}/${Number(item.totalMarks) || 0} marks</small></div>
+            </div>
+        `).join("") : renderEmptyState("📝", "No completed exams yet", "Your scores will appear here after you submit a practice session or exam.");
+    }
+
+    if (subjectsEl) {
+        const subjectStats = {};
+        history.forEach(item => {
+            const name = item.subject || "General";
+            if (!subjectStats[name]) subjectStats[name] = { total: 0, count: 0 };
+            subjectStats[name].total += Number(item.percentage) || 0;
+            subjectStats[name].count++;
+        });
+        const rows = Object.entries(subjectStats).sort((a, b) => b[1].count - a[1].count).slice(0, 6);
+        subjectsEl.innerHTML = rows.length ? rows.map(([name, stat]) => {
+            const average = Math.round(stat.total / stat.count);
+            return `<div class="dashboard-subject-row"><div><strong>${escapeHTML(name)}</strong><span>${average}% average · ${stat.count} attempt${stat.count === 1 ? "" : "s"}</span></div><div class="dashboard-subject-track"><i style="width:${Math.max(0, Math.min(100, average))}%"></i></div></div>`;
+        }).join("") : renderEmptyState("📊", "No subject data yet", "Complete an exam to see your performance by subject.");
+    }
+
+    displayWeakTopics();
+    if (typeof displaySavedNotes === "function") displaySavedNotes();
+    updateStats();
+}
+
+document.addEventListener("click", event => {
+    const button = event.target.closest("[data-revise-topic]");
+    if (!button) return;
+    const topicInput = document.getElementById("topicInput");
+    if (topicInput) topicInput.value = button.dataset.reviseTopic || "";
+    if (typeof showPage === "function") showPage("study");
+});
+
+
 /* =========================================================
    SAVED NOTES
 ========================================================= */
@@ -2861,146 +3088,80 @@ async function updateAuthUI(
     user = null
 ) {
 
-    const loggedIn =
-        Boolean(user);
+    const loggedIn = Boolean(user);
 
-            // Show the welcome screen only when signed out.
     if (welcomeGate) {
         welcomeGate.classList.toggle("hidden", loggedIn);
     }
 
-    // Close any leftover login forms when authenticated.
     if (loggedIn) {
         closeAllAuthModals();
     }
 
+    communityUser = user || null;
+    switchProgressAccount(loggedIn ? user.id : null);
+    currentUserRole = "user";
 
-    /*
-       Keep community state synchronized.
-    */
-
-    communityUser =
-        user;
-
+    if (adminNavLink) {
+        adminNavLink.classList.add("hidden");
+    }
 
     if (!loggedIn) {
 
         if (loginBtn) {
-
-            loginBtn.style.display =
-                "";
-
-            loginBtn.classList.remove(
-                "hidden"
-            );
-
+            loginBtn.style.display = "";
+            loginBtn.classList.remove("hidden");
         }
-
 
         if (signupBtn) {
-
-            signupBtn.style.display =
-                "";
-
-            signupBtn.classList.remove(
-                "hidden"
-            );
-
+            signupBtn.style.display = "";
+            signupBtn.classList.remove("hidden");
         }
-
 
         if (logoutBtn) {
-
-            logoutBtn.style.display =
-                "none";
-
-            logoutBtn.classList.add(
-                "hidden"
-            );
-
+            logoutBtn.style.display = "none";
+            logoutBtn.classList.add("hidden");
         }
-
 
         if (authUserInfo) {
-
-            authUserInfo.style.display =
-                "none";
-
-            authUserInfo.classList.add(
-                "hidden"
-            );
-
+            authUserInfo.style.display = "none";
+            authUserInfo.classList.add("hidden");
         }
-
 
         if (profileName) {
-
-            profileName.textContent =
-                "Guest";
-
+            profileName.textContent = "Guest";
         }
-
 
         if (profileEmail) {
-
-            profileEmail.textContent =
-                "";
-
+            profileEmail.textContent = "";
         }
 
+        if (currentPage === "admin") {
+            showPage("home", false);
+        }
 
         return;
-
     }
-
 
     if (loginBtn) {
-
-        loginBtn.style.display =
-            "none";
-
-        loginBtn.classList.add(
-            "hidden"
-        );
-
+        loginBtn.style.display = "none";
+        loginBtn.classList.add("hidden");
     }
-
 
     if (signupBtn) {
-
-        signupBtn.style.display =
-            "none";
-
-        signupBtn.classList.add(
-            "hidden"
-        );
-
+        signupBtn.style.display = "none";
+        signupBtn.classList.add("hidden");
     }
-
 
     if (logoutBtn) {
-
-        logoutBtn.style.display =
-            "";
-
-        logoutBtn.classList.remove(
-            "hidden"
-        );
-
+        logoutBtn.style.display = "";
+        logoutBtn.classList.remove("hidden");
     }
-
 
     if (authUserInfo) {
-
-        authUserInfo.style.display =
-            "";
-
-        authUserInfo.classList.remove(
-            "hidden"
-        );
-
+        authUserInfo.style.display = "";
+        authUserInfo.classList.remove("hidden");
     }
-
 
     let displayName =
         user.user_metadata?.full_name ||
@@ -3008,76 +3169,342 @@ async function updateAuthUI(
         user.email?.split("@")[0] ||
         "Student";
 
-
-    /*
-       Try to get the display name
-       from the Supabase profiles table.
-
-       If the table isn't available,
-       the user's metadata is still used.
-    */
-
     if (supabaseClient) {
-
         try {
+            const { data, error } = await supabaseClient
+                .from("profiles")
+                .select("display_name,username,role,is_banned")
+                .eq("id", user.id)
+                .maybeSingle();
 
-            const {
-                data,
-                error
-            } =
-                await supabaseClient
-                    .from("profiles")
-                    .select(
-                        "display_name,username"
-                    )
-                    .eq(
-                        "id",
-                        user.id
-                    )
-                    .maybeSingle();
+            if (error) {
+                throw error;
+            }
 
-
-            if (
-                !error &&
-                data
-            ) {
-
+            if (data) {
                 displayName =
                     data.display_name ||
                     data.username ||
                     displayName;
 
+                currentUserRole =
+                    String(data.role || "user").toLowerCase();
+
+                if (data.is_banned === true) {
+                    await supabaseClient.auth.signOut();
+                    showToast("This account has been suspended. Contact Studyflow support.");
+                    return;
+                }
             }
 
+        } catch (error) {
+            currentUserRole = "user";
+            console.warn("Could not load user profile permissions:", error);
         }
-
-        catch (error) {
-
-            console.warn(
-                "Could not load profile:",
-                error
-            );
-
-        }
-
     }
 
+    if (adminNavLink) {
+        adminNavLink.classList.toggle(
+            "hidden",
+            currentUserRole !== "admin"
+        );
+    }
+
+    if (
+        currentPage === "admin" &&
+        currentUserRole !== "admin"
+    ) {
+        showPage("home", false);
+    }
 
     if (profileName) {
-
-        profileName.textContent =
-            displayName;
-
+        profileName.textContent = displayName;
     }
-
 
     if (profileEmail) {
-
-        profileEmail.textContent =
-            user.email || "";
-
+        profileEmail.textContent = user.email || "";
     }
 
+}
+
+
+/* =========================================================
+   ADMIN DASHBOARD
+========================================================= */
+
+const adminUsersList = document.getElementById("adminUsersList");
+const adminSearchInput = document.getElementById("adminSearchInput");
+const adminRefreshBtn = document.getElementById("adminRefreshBtn");
+const adminTotalUsers = document.getElementById("adminTotalUsers");
+const adminBannedUsers = document.getElementById("adminBannedUsers");
+const adminAdminUsers = document.getElementById("adminAdminUsers");
+const adminStatus = document.getElementById("adminStatus");
+
+
+function renderAdminUsers() {
+
+    if (!adminUsersList) return;
+
+    const searchTerm =
+        (adminSearchInput?.value || "").trim().toLowerCase();
+
+    const filteredUsers = adminUsersCache.filter(user => {
+        const name = user.display_name || "";
+        const username = user.username || "";
+        const id = user.id || "";
+
+        return (
+            name.toLowerCase().includes(searchTerm) ||
+            username.toLowerCase().includes(searchTerm) ||
+            id.toLowerCase().includes(searchTerm)
+        );
+    });
+
+    if (!filteredUsers.length) {
+        adminUsersList.innerHTML = `
+            <div class="admin-empty-state">
+                <div>🔎</div>
+                <strong>No users found</strong>
+                <p>Try another name or username.</p>
+            </div>
+        `;
+        return;
+    }
+
+    adminUsersList.innerHTML = filteredUsers.map(user => {
+
+        const displayName = escapeHTML(
+            user.display_name || user.username || "Student"
+        );
+
+        const username = escapeHTML(
+            user.username ? "@" + user.username : "No username"
+        );
+
+        const role = String(user.role || "user").toLowerCase();
+        const isBanned = user.is_banned === true;
+        const isSelf = user.id === communityUser?.id;
+        const isAdmin = role === "admin";
+
+        let actionButton = "";
+
+        if (isSelf || isAdmin) {
+            actionButton = `
+                <button class="admin-action-btn" type="button" disabled>
+                    ${isSelf ? "Your account" : "Protected admin"}
+                </button>
+            `;
+        } else {
+            actionButton = `
+                <button
+                    class="admin-action-btn ${isBanned ? "unban" : "ban"}"
+                    type="button"
+                    data-admin-action="toggle-ban"
+                    data-user-id="${escapeHTML(user.id)}"
+                    data-ban="${isBanned ? "false" : "true"}">
+                    ${isBanned ? "Unban user" : "Ban user"}
+                </button>
+            `;
+        }
+
+        return `
+            <article class="admin-user-row">
+                <div class="admin-user-details">
+                    <div class="admin-user-avatar">
+                        ${escapeHTML((user.display_name || user.username || "S").charAt(0).toUpperCase())}
+                    </div>
+                    <div class="admin-user-copy">
+                        <strong>${displayName}</strong>
+                        <span>${username}</span>
+                        <small>ID: ${escapeHTML(user.id)}</small>
+                    </div>
+                </div>
+
+                <div class="admin-user-controls">
+                    <span class="admin-role-pill ${role === "admin" ? "admin" : ""}">
+                        ${escapeHTML(role)}
+                    </span>
+                    <span class="admin-status-pill ${isBanned ? "banned" : "active"}">
+                        ${isBanned ? "Banned" : "Active"}
+                    </span>
+                    ${actionButton}
+                </div>
+            </article>
+        `;
+    }).join("");
+
+}
+
+
+async function loadAdminDashboard() {
+
+    if (
+        currentUserRole !== "admin" ||
+        !communityUser ||
+        !supabaseClient
+    ) {
+        showToast("Admin access is required.");
+        return;
+    }
+
+    if (adminStatus) {
+        adminStatus.textContent = "Loading account information...";
+    }
+
+    if (adminUsersList) {
+        adminUsersList.innerHTML = `
+            <div class="admin-loading">
+                <span class="loading-spinner"></span>
+                <p>Loading users...</p>
+            </div>
+        `;
+    }
+
+    try {
+        const { data, error } =
+            await supabaseClient.rpc("admin_list_users");
+
+        if (error) throw error;
+
+        adminUsersCache = Array.isArray(data) ? data : [];
+
+        const total = adminUsersCache.length;
+        const banned = adminUsersCache.filter(
+            user => user.is_banned === true
+        ).length;
+        const admins = adminUsersCache.filter(
+            user => String(user.role || "").toLowerCase() === "admin"
+        ).length;
+
+        if (adminTotalUsers) {
+            adminTotalUsers.textContent = total.toLocaleString();
+        }
+
+        if (adminBannedUsers) {
+            adminBannedUsers.textContent = banned.toLocaleString();
+        }
+
+        if (adminAdminUsers) {
+            adminAdminUsers.textContent = admins.toLocaleString();
+        }
+
+        renderAdminUsers();
+
+        if (adminStatus) {
+            adminStatus.textContent =
+                `Showing ${total.toLocaleString()} registered account${total === 1 ? "" : "s"}.`;
+        }
+
+    } catch (error) {
+        console.error("Admin dashboard load error:", error);
+        adminUsersCache = [];
+
+        if (adminUsersList) {
+            adminUsersList.innerHTML = `
+                <div class="admin-error-state">
+                    <strong>Couldn't load users</strong>
+                    <p>${escapeHTML(error.message || "Check the admin database functions and permissions.")}</p>
+                </div>
+            `;
+        }
+
+        if (adminStatus) {
+            adminStatus.textContent = "Admin data could not be loaded.";
+        }
+    }
+
+}
+
+
+async function setAdminUserBan(userId, shouldBan) {
+
+    if (
+        currentUserRole !== "admin" ||
+        !communityUser ||
+        !supabaseClient
+    ) {
+        showToast("You are not allowed to manage accounts.");
+        return;
+    }
+
+    const selectedUser = adminUsersCache.find(
+        user => user.id === userId
+    );
+
+    if (!selectedUser) {
+        showToast("User not found. Refresh the list.");
+        return;
+    }
+
+    if (
+        userId === communityUser.id ||
+        String(selectedUser.role || "").toLowerCase() === "admin"
+    ) {
+        showToast("This account is protected from this action.");
+        return;
+    }
+
+    const userLabel =
+        selectedUser.display_name ||
+        selectedUser.username ||
+        "this user";
+
+    const confirmed = window.confirm(
+        shouldBan
+            ? `Ban ${userLabel} from Studyflow?`
+            : `Unban ${userLabel}?`
+    );
+
+    if (!confirmed) return;
+
+    try {
+        const { error } = await supabaseClient.rpc(
+            "admin_set_user_ban",
+            {
+                target_user_id: userId,
+                should_ban: shouldBan
+            }
+        );
+
+        if (error) throw error;
+
+        showToast(
+            shouldBan
+                ? "User banned successfully."
+                : "User unbanned successfully."
+        );
+
+        await loadAdminDashboard();
+
+    } catch (error) {
+        console.error("Admin ban action error:", error);
+        showToast(error.message || "Could not update this account.");
+    }
+
+}
+
+
+if (adminSearchInput) {
+    adminSearchInput.addEventListener("input", renderAdminUsers);
+}
+
+if (adminRefreshBtn) {
+    adminRefreshBtn.addEventListener("click", loadAdminDashboard);
+}
+
+if (adminUsersList) {
+    adminUsersList.addEventListener("click", event => {
+        const button = event.target.closest(
+            '[data-admin-action="toggle-ban"]'
+        );
+
+        if (!button) return;
+
+        setAdminUserBan(
+            button.dataset.userId,
+            button.dataset.ban === "true"
+        );
+    });
 }
 
 
@@ -4553,6 +4980,96 @@ async function sendFriendRequest(
 
 }
 
+/* =========================================================
+   RENDER FRIEND REQUESTS
+========================================================= */
+
+function renderFriendRequests(requests) {
+
+    if (!friendRequestsList) return;
+
+    friendRequestsList.innerHTML = "";
+
+    if (!requests || requests.length === 0) {
+
+        friendRequestsList.innerHTML = `
+            <div class="chat-empty">
+                No pending friend requests.
+            </div>
+        `;
+
+        if (requestCount) {
+            requestCount.textContent = "0";
+        }
+
+        return;
+    }
+
+    if (requestCount) {
+        requestCount.textContent = String(requests.length);
+    }
+
+    requests.forEach(request => {
+
+        const profile = request.profiles || {};
+
+        const item = document.createElement("div");
+        item.className = "friend-item";
+
+        const info = document.createElement("div");
+        info.className = "friend-info";
+
+        const name = document.createElement("strong");
+
+        name.textContent =
+            profile.display_name ||
+            profile.username ||
+            "Student";
+
+        const username = document.createElement("span");
+
+        username.textContent = profile.username
+            ? `@${profile.username}`
+            : "";
+
+        info.appendChild(name);
+        info.appendChild(username);
+
+        const actions = document.createElement("div");
+        actions.className = "friend-request-actions";
+
+        const acceptButton = document.createElement("button");
+
+        acceptButton.type = "button";
+        acceptButton.textContent = "Accept";
+        acceptButton.className = "friend-accept-btn";
+
+        acceptButton.addEventListener("click", () => {
+            respondToFriendRequest(request.id, "accepted");
+        });
+
+        const declineButton = document.createElement("button");
+
+        declineButton.type = "button";
+        declineButton.textContent = "Decline";
+        declineButton.className = "friend-decline-btn";
+
+        declineButton.addEventListener("click", () => {
+            respondToFriendRequest(request.id, "declined");
+        });
+
+        actions.appendChild(acceptButton);
+        actions.appendChild(declineButton);
+
+        item.appendChild(info);
+        item.appendChild(actions);
+
+        friendRequestsList.appendChild(item);
+
+    });
+
+}
+
 
 /* =========================================================
    LOAD FRIEND REQUESTS
@@ -4669,55 +5186,28 @@ async function loadFriendRequests() {
 
 
 
-/* =========================================================
-   RESPOND TO FRIEND REQUEST
-========================================================= */
 
-async function respondToFriendRequest(
-    requestId,
-    status
-) {
+async function respondToFriendRequest(requestId, status) {
 
-    if (
-        !requireCommunityLogin()
-    ) {
-
-        return;
-
-    }
-
+    if (!requireCommunityLogin()) return;
 
     try {
 
-        const {
-            error
-        } =
-            await supabaseClient
-                .from(
-                    "friend_requests"
-                )
-                .update({
-                    status:
-                        status
-                })
-                .eq(
-                    "id",
-                    requestId
-                )
-                .eq(
-                    "receiver_id",
-                    communityUser.id
-                );
+        const { data, error } = await supabaseClient
+            .from("friend_requests")
+            .update({ status })
+            .eq("id", requestId)
+            .eq("receiver_id", communityUser.id)
+            .select("id")
+            .maybeSingle();
 
+        if (error) throw error;
 
-        if (
-            error
-        ) {
-
-            throw error;
-
+        if (!data) {
+            throw new Error(
+                "The request could not be updated. Please refresh and try again."
+            );
         }
-
 
         showCommunityNotification(
             status === "accepted"
@@ -4725,181 +5215,196 @@ async function respondToFriendRequest(
                 : "Friend request declined."
         );
 
+        await Promise.all([
+            loadFriendRequests(),
+            loadFriends()
+        ]);
 
-        await loadFriendRequests();
+    } catch (error) {
 
-        await loadFriends();
-
-    }
-
-    catch (error) {
-
-        console.error(
-            "Friend response error:",
-            error
-        );
-
+        console.error("Friend response error:", error);
 
         showCommunityNotification(
-            error.message ||
-            "Could not update friend request."
+            error.message || "Could not update friend request."
         );
 
     }
-
 }
 
 
-/* =========================================================
-   LOAD FRIENDS
-========================================================= */
+
 
 async function loadFriends() {
 
-    if (
-        !supabaseClient ||
-        !communityUser ||
-        !friendsList
-    ) {
-
+    if (!supabaseClient || !communityUser || !friendsList) {
         return;
-
     }
-
 
     try {
 
-        const {
-            data: sent,
-            error: sentError
-        } =
-            await supabaseClient
-                .from(
-                    "friend_requests"
+        // Get every accepted request involving this user.
+        const { data: requests, error } = await supabaseClient
+            .from("friend_requests")
+            .select("sender_id, receiver_id")
+            .eq("status", "accepted")
+            .or(
+                `sender_id.eq.${communityUser.id},receiver_id.eq.${communityUser.id}`
+            );
+
+        if (error) throw error;
+
+        // Find the other user's ID in each accepted request.
+        const friendIds = [
+            ...new Set(
+                (requests || []).map(request =>
+                    request.sender_id === communityUser.id
+                        ? request.receiver_id
+                        : request.sender_id
                 )
-                .select(`
-                    receiver_id,
-                    profiles:receiver_id (
-                        id,
-                        username,
-                        display_name,
-                        avatar_url
-                    )
-                `)
-                .eq(
-                    "sender_id",
-                    communityUser.id
-                )
-                .eq(
-                    "status",
-                    "accepted"
-                );
+            )
+        ];
 
-
-        if (
-            sentError
-        ) {
-
-            throw sentError;
-
+        if (friendIds.length === 0) {
+            renderFriends([]);
+            return;
         }
 
-
-        const {
-            data: received,
-            error: receivedError
-        } =
+        // Fetch friend profiles separately.
+        const { data: profiles, error: profileError } =
             await supabaseClient
-                .from(
-                    "friend_requests"
-                )
-                .select(`
-                    sender_id,
-                    profiles:sender_id (
-                        id,
-                        username,
-                        display_name,
-                        avatar_url
-                    )
-                `)
-                .eq(
-                    "receiver_id",
-                    communityUser.id
-                )
-                .eq(
-                    "status",
-                    "accepted"
-                );
+                .from("profiles")
+                .select("id, username, display_name, avatar_url")
+                .in("id", friendIds);
 
+        if (profileError) throw profileError;
 
-        if (
-            receivedError
-        ) {
+        renderFriends(profiles || []);
 
-            throw receivedError;
+    } catch (error) {
 
-        }
-
-
-        const friends = [];
-
-
-        (sent || []).forEach(
-            row => {
-
-                if (
-                    row.profiles
-                ) {
-
-                    friends.push(
-                        row.profiles
-                    );
-
-                }
-
-            }
-        );
-
-
-        (received || []).forEach(
-            row => {
-
-                if (
-                    row.profiles
-                ) {
-
-                    friends.push(
-                        row.profiles
-                    );
-
-                }
-
-            }
-        );
-
-
-        renderFriends(
-            friends
-        );
-
-    }
-
-    catch (error) {
-
-        console.error(
-            "Friends loading error:",
-            error
-        );
-
+        console.error("Friends loading error:", error);
 
         friendsList.innerHTML = `
             <div class="chat-empty">
-                Could not load friends.
+                Could not load friends. Please refresh.
             </div>
         `;
 
     }
+}
 
+
+
+/* =========================================================
+   RENDER FRIENDS
+========================================================= */
+
+
+function renderFriendRequests(requests) {
+
+    if (!friendRequestsList) return;
+
+    friendRequestsList.innerHTML = "";
+
+    if (requestCount) {
+        requestCount.textContent = String(requests.length);
+    }
+
+    if (!requests.length) {
+
+        friendRequestsList.innerHTML = `
+            <div class="friend-empty-state">
+                <div class="friend-empty-icon">🤝</div>
+                <strong>You're all caught up!</strong>
+                <span>No new friend requests right now.</span>
+            </div>
+        `;
+
+        return;
+    }
+
+    requests.forEach(request => {
+
+        const profile = Array.isArray(request.profiles)
+            ? request.profiles[0]
+            : request.profiles;
+
+        const name =
+            profile?.display_name ||
+            profile?.username ||
+            "Student";
+
+        const avatar = document.createElement("div");
+        avatar.className = "friend-request-avatar";
+
+        if (profile?.avatar_url) {
+
+            const image = document.createElement("img");
+            image.src = profile.avatar_url;
+            image.alt = "";
+            avatar.appendChild(image);
+
+        } else {
+
+            avatar.textContent = name.charAt(0).toUpperCase();
+
+        }
+
+        const item = document.createElement("div");
+        item.className = "friend-request-card";
+
+        const details = document.createElement("div");
+        details.className = "friend-request-details";
+
+        const nameElement = document.createElement("strong");
+        nameElement.textContent = name;
+
+        const username = document.createElement("span");
+        username.textContent = profile?.username
+            ? `@${profile.username}`
+            : "Studyflow student";
+
+        details.append(avatar, nameElement, username);
+
+        const actions = document.createElement("div");
+        actions.className = "friend-request-actions";
+
+        const accept = document.createElement("button");
+        accept.type = "button";
+        accept.className = "accept-friend-btn";
+        accept.textContent = "Accept";
+
+        accept.addEventListener("click", async () => {
+            accept.disabled = true;
+            accept.textContent = "Accepting...";
+
+            await respondToFriendRequest(
+                request.id,
+                "accepted"
+            );
+        });
+
+        const decline = document.createElement("button");
+        decline.type = "button";
+        decline.className = "reject-friend-btn";
+        decline.textContent = "Decline";
+
+        decline.addEventListener("click", async () => {
+            decline.disabled = true;
+            decline.textContent = "Declining...";
+
+            await respondToFriendRequest(
+                request.id,
+                "declined"
+            );
+        });
+
+        actions.append(accept, decline);
+        item.append(details, actions);
+
+        friendRequestsList.appendChild(item);
+
+    });
 }
 
 
@@ -4907,148 +5412,97 @@ async function loadFriends() {
    RENDER FRIENDS
 ========================================================= */
 
-function renderFriends(
-    friends
-) {
+function renderFriends(friends) {
 
-    if (
-        !friendsList
-    ) {
+    if (!friendsList) return;
 
-        return;
+    friendsList.innerHTML = "";
 
+    // Remove duplicate profiles
+    const uniqueFriends = [];
+    const seenIds = new Set();
+
+    (friends || []).forEach(friend => {
+
+        if (friend?.id && !seenIds.has(friend.id)) {
+            seenIds.add(friend.id);
+            uniqueFriends.push(friend);
+        }
+
+    });
+
+    // Update friends counter
+    if (friendsCount) {
+        friendsCount.textContent = String(uniqueFriends.length);
     }
 
-
-    friendsList.innerHTML =
-        "";
-
-
-    const uniqueFriends =
-        [];
-
-    const ids =
-        new Set();
-
-
-    friends.forEach(
-        friend => {
-
-            if (
-                friend?.id &&
-                !ids.has(
-                    friend.id
-                )
-            ) {
-
-                ids.add(
-                    friend.id
-                );
-
-                uniqueFriends.push(
-                    friend
-                );
-
-            }
-
-        }
-    );
-
-
-    if (
-        !uniqueFriends.length
-    ) {
+    // Empty state
+    if (uniqueFriends.length === 0) {
 
         friendsList.innerHTML = `
-            <div class="chat-empty">
-                You have no friends yet.
+            <div class="friend-empty-state">
+                <div class="friend-empty-icon">🤝</div>
+                <strong>No friends yet</strong>
+                <span>Accepted friend requests will appear here.</span>
             </div>
         `;
 
         return;
-
     }
 
+    // Display friends
+    uniqueFriends.forEach(friend => {
 
-    uniqueFriends.forEach(
-        friend => {
+        const item = document.createElement("div");
+        item.className = "friend-item";
 
-            const item =
-                document.createElement(
-                    "div"
-                );
+        const info = document.createElement("div");
+        info.className = "friend-info";
 
-            item.className =
-                "friend-item";
+        const avatar = document.createElement("div");
+        avatar.className = "friend-request-avatar";
 
+        const displayName =
+            friend.display_name ||
+            friend.username ||
+            "Student";
 
-            const info =
-                document.createElement(
-                    "div"
-                );
+        if (friend.avatar_url) {
 
-            info.className =
-                "friend-info";
+            const image = document.createElement("img");
+            image.src = friend.avatar_url;
+            image.alt = "";
+            avatar.appendChild(image);
 
+        } else {
 
-            const name =
-                document.createElement(
-                    "strong"
-                );
-
-            name.textContent =
-                friend.display_name ||
-                friend.username ||
-                "Student";
-
-
-            const username =
-                document.createElement(
-                    "span"
-                );
-
-            username.textContent =
-                friend.username
-                    ? `@${friend.username}`
-                    : "";
-
-
-            info.appendChild(
-                name
-            );
-
-            info.appendChild(
-                username
-            );
-
-
-            const status =
-                document.createElement(
-                    "span"
-                );
-
-            status.className =
-                "friend-online-status";
-
-            status.textContent =
-                "Friend";
-
-
-            item.appendChild(
-                info
-            );
-
-            item.appendChild(
-                status
-            );
-
-
-            friendsList.appendChild(
-                item
-            );
+            avatar.textContent =
+                displayName.charAt(0).toUpperCase();
 
         }
-    );
+
+        const details = document.createElement("div");
+
+        const name = document.createElement("strong");
+        name.textContent = displayName;
+
+        const username = document.createElement("span");
+        username.textContent = friend.username
+            ? `@${friend.username}`
+            : "Studyflow student";
+
+        details.append(name, username);
+        info.append(avatar, details);
+
+        const status = document.createElement("span");
+        status.className = "friend-online-status";
+        status.textContent = "✓ Friend";
+
+        item.append(info, status);
+
+        friendsList.appendChild(item);
+
+    });
 
 }
 
@@ -8158,87 +8612,60 @@ function calculateExamScore() {
    SAVE EXAM PROGRESS
 ========================================================= */
 
-function saveExamProgress(
-    score
-) {
+function saveExamProgress(score) {
+    if (!score || !progress) return;
 
-    if (
-        !score ||
-        !progress
-    ) {
+    const objCorrect = Number(score.objCorrect) || 0;
+    const objTotal = Number(score.objTotal) || 0;
+    const subject = String(examConfig.subject || "General").trim();
+    const topic = String(examConfig.topic || "Whole subject").trim();
+    const now = new Date();
 
-        return;
+    progress.quizCorrect = (Number(progress.quizCorrect) || 0) + objCorrect;
+    progress.quizTotal = (Number(progress.quizTotal) || 0) + objTotal;
+
+    // Keep a real attempt history, including theory marks in the overall score.
+    if (!Array.isArray(progress.quizHistory)) progress.quizHistory = [];
+    const attempt = {
+        id: `${now.getTime()}-${Math.random().toString(36).slice(2, 8)}`,
+        subject,
+        topic,
+        examType: String(examConfig.examType || "General"),
+        mode: String(examConfig.mode || "practice"),
+        questionType: String(examConfig.questionType || "both"),
+        earnedMarks: Number(score.earnedMarks) || 0,
+        totalMarks: Number(score.totalMarks) || 0,
+        percentage: Math.round(Number(score.percentage) || 0),
+        objCorrect,
+        objTotal,
+        date: now.toISOString()
+    };
+    progress.quizHistory.unshift(attempt);
+    progress.quizHistory = progress.quizHistory.slice(0, 30);
+
+    // Store weak-topic evidence from incorrect objective answers.
+    const wrong = Math.max(0, objTotal - objCorrect);
+    if (wrong > 0) {
+        if (!progress.weakTopics || typeof progress.weakTopics !== "object") progress.weakTopics = {};
+        const weakKey = `${subject} — ${topic}`;
+        const previous = progress.weakTopics[weakKey] || {};
+        progress.weakTopics[weakKey] = {
+            subject,
+            topic,
+            incorrect: (Number(previous.incorrect) || 0) + wrong,
+            attempted: (Number(previous.attempted) || 0) + objTotal,
+            lastAttempt: now.toISOString()
+        };
     }
 
+    recordStudyActivity({
+        type: "quiz",
+        title: `${subject}: ${topic}`,
+        detail: `${attempt.percentage}% · ${examConfig.examType || "General"} ${examConfig.mode || "practice"}`
+    });
 
-    progress.quizCorrect =
-        Number(
-            progress.quizCorrect || 0
-        ) +
-        Number(
-            score.objCorrect || 0
-        );
-
-
-    progress.quizTotal =
-        Number(
-            progress.quizTotal || 0
-        ) +
-        Number(
-            score.objTotal || 0
-        );
-
-
-    const today =
-        new Date()
-            .toISOString()
-            .split("T")[0];
-
-
-    if (
-        !Array.isArray(
-            progress.studyDays
-        )
-    ) {
-
-        progress.studyDays =
-            [];
-
-    }
-
-
-    if (
-        !progress.studyDays.includes(
-            today
-        )
-    ) {
-
-        progress.studyDays.push(
-            today
-        );
-
-    }
-
-
-    if (
-        typeof saveProgress ===
-        "function"
-    ) {
-
-        saveProgress();
-
-    }
-
-
-    if (
-        typeof updateDashboard ===
-        "function"
-    ) {
-
-        updateDashboard();
-
-    }
-
+    progress.streak = calculateStudyStreak();
+    saveProgress();
 }
 
 

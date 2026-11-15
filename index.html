@@ -2305,6 +2305,34 @@
         </div>
     </div>
 
+
+<div class="admin-management-panel">
+
+    <div class="admin-panel-heading">
+        <div>
+            <span class="small-label">COMMUNITY CONTROL</span>
+            <h2>Global Chat Management</h2>
+            <p>
+                Reset the Global Chat by removing all existing messages.
+            </p>
+        </div>
+    </div>
+
+    <button
+        class="admin-action-btn ban"
+        id="adminResetChatBtn"
+        type="button">
+        🗑️ Reset Global Chat
+    </button>
+
+    <p class="admin-security-note">
+        This action permanently deletes all Global Chat messages.
+        User accounts and friend requests will remain untouched.
+    </p>
+
+</div>
+
+
     <div class="admin-notice">
         <strong>Administrator safety</strong>
         <p>Your own account and other administrator accounts are protected from ban actions in this dashboard.</p>
@@ -2538,7 +2566,69 @@ window.MathJax = {
     </div>
 
 </div>
+<!-- GLOBAL CHAT RESET CONFIRMATION MODAL -->
 
+<div
+    class="reset-modal-overlay"
+    id="resetChatModal"
+    hidden
+>
+    <div
+        class="reset-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="resetModalTitle"
+    >
+
+        <div class="reset-modal-icon">
+            <span>!</span>
+        </div>
+
+        <span class="reset-modal-label">
+            COMMUNITY MANAGEMENT
+        </span>
+
+        <h2 id="resetModalTitle">
+            Reset Global Chat?
+        </h2>
+
+        <p class="reset-modal-description">
+            Are you sure you want to clear the entire
+            Global Chat?
+        </p>
+
+        <div class="reset-modal-warning">
+            <span>⚠️</span>
+            <p>
+                All existing messages will be permanently
+                deleted. Student accounts, profiles and
+                friend requests will remain untouched.
+            </p>
+        </div>
+
+        <div class="reset-modal-actions">
+
+            <button
+                type="button"
+                class="reset-modal-cancel"
+                id="cancelResetChat"
+            >
+                Cancel
+            </button>
+
+            <button
+                type="button"
+                class="reset-modal-confirm"
+                id="confirmResetChat"
+            >
+                <span>🗑️</span>
+                Reset Chat
+            </button>
+
+        </div>
+
+    </div>
+</div>
 
 <!-- =====================================================
      SUPABASE

@@ -549,9 +549,15 @@ function showPage(
     }
 
     if (pageName === "admin") {
-        loadAdminDashboard();
+
+    // Clear the previous user search
+    if (adminSearchInput) {
+        adminSearchInput.value = "";
     }
 
+    // Load all users
+    loadAdminDashboard();
+}
 
     window.scrollTo({
         top: 0,
@@ -3235,6 +3241,7 @@ async function updateAuthUI(
 const adminUsersList = document.getElementById("adminUsersList");
 const adminSearchInput = document.getElementById("adminSearchInput");
 const adminRefreshBtn = document.getElementById("adminRefreshBtn");
+const adminResetChatBtn = document.getElementById("adminResetChatBtn");
 const adminTotalUsers = document.getElementById("adminTotalUsers");
 const adminBannedUsers = document.getElementById("adminBannedUsers");
 const adminAdminUsers = document.getElementById("adminAdminUsers");
@@ -3492,6 +3499,13 @@ if (adminRefreshBtn) {
     adminRefreshBtn.addEventListener("click", loadAdminDashboard);
 }
 
+if (adminResetChatBtn) {
+    adminResetChatBtn.addEventListener(
+        "click",
+        resetGlobalChat
+    );
+}
+
 if (adminUsersList) {
     adminUsersList.addEventListener("click", event => {
         const button = event.target.closest(
@@ -3505,6 +3519,140 @@ if (adminUsersList) {
             button.dataset.ban === "true"
         );
     });
+}
+
+function askResetChatConfirmation() {
+
+    return new Promise((resolve) => {
+
+        const modal =
+            document.getElementById("resetChatModal");
+
+        const cancelBtn =
+            document.getElementById("cancelResetChat");
+
+        const confirmBtn =
+            document.getElementById("confirmResetChat");
+
+        if (!modal || !cancelBtn || !confirmBtn) {
+            resolve(false);
+            return;
+        }
+
+        function closeModal(result) {
+
+            modal.hidden = true;
+
+            cancelBtn.removeEventListener("click", cancel);
+            confirmBtn.removeEventListener("click", confirm);
+            modal.removeEventListener("click", outsideClick);
+            document.removeEventListener("keydown", escapeKey);
+
+            resolve(result);
+        }
+
+        function cancel() {
+            closeModal(false);
+        }
+
+        function confirm() {
+            closeModal(true);
+        }
+
+        function outsideClick(event) {
+            if (event.target === modal) {
+                cancel();
+            }
+        }
+
+        function escapeKey(event) {
+            if (event.key === "Escape") {
+                cancel();
+            }
+        }
+
+        cancelBtn.addEventListener("click", cancel);
+        confirmBtn.addEventListener("click", confirm);
+
+        modal.addEventListener("click", outsideClick);
+        document.addEventListener("keydown", escapeKey);
+
+        modal.hidden = false;
+
+        cancelBtn.focus();
+
+    });
+}
+
+
+/* =========================================================
+   RESET GLOBAL CHAT
+========================================================= */
+
+async function resetGlobalChat() {
+
+    if (
+        currentUserRole !== "admin" ||
+        !communityUser ||
+        !supabaseClient
+    ) {
+        showToast("Admin access is required.");
+        return;
+    }
+
+const confirmed = await askResetChatConfirmation();
+
+if (!confirmed) return;
+
+    if (!confirmed) {
+        return;
+    }
+
+    try {
+
+        if (adminResetChatBtn) {
+            adminResetChatBtn.disabled = true;
+            adminResetChatBtn.textContent = "Resetting...";
+        }
+
+        const { data, error } =
+            await supabaseClient.rpc(
+                "admin_reset_global_chat"
+            );
+
+        if (error) {
+            throw error;
+        }
+
+        const deletedCount = Number(data) || 0;
+
+        showToast(
+            `Global Chat reset successfully. ${deletedCount} messages deleted.`
+        );
+
+        // Refresh the chat if it is currently open.
+        await loadChatMessages();
+
+    } catch (error) {
+
+        console.error(
+            "Global Chat reset error:",
+            error
+        );
+
+        showToast(
+            error.message || "Could not reset Global Chat."
+        );
+
+    } finally {
+
+        if (adminResetChatBtn) {
+            adminResetChatBtn.disabled = false;
+            adminResetChatBtn.textContent = "🗑️ Reset Global Chat";
+        }
+
+    }
+
 }
 
 
